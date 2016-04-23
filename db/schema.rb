@@ -11,6 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160423142252) do
 
   create_table "follows", force: :cascade do |t|
@@ -41,6 +42,9 @@ ActiveRecord::Schema.define(version: 20160423142252) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
+=======
+ActiveRecord::Schema.define(version: 20160422164227) do
+>>>>>>> fbf350c8abd4b4e6cf1c839c62c094af2d63fa98
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
@@ -63,9 +67,12 @@ ActiveRecord::Schema.define(version: 20160423142252) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+<<<<<<< HEAD
   create_table "users_orders", force: :cascade do |t|
     t.integer "user_id",  limit: 4
     t.integer "order_id", limit: 4
   end
 
+=======
+>>>>>>> fbf350c8abd4b4e6cf1c839c62c094af2d63fa98
 end
