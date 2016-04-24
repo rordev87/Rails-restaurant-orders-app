@@ -14,6 +14,8 @@ Devise.setup do |config|
   # with default "from" parameter.
   config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
 
+config.secret_key = '12a42133b3bcf9886c15e1ce3bc883aebc546118f21be52f27bedc3e0733d25d1838aa9b4872449c32c32eab8c3433f5b87b4af5816646c7a72db8d7f0089635'
+  
   config.omniauth :facebook,'1776233579271410','b443313b1c01e18552143502c10c054a'
   config.omniauth :google_oauth2, '245086425725-akjrdfq0qrdgvssi0u1noq0hvc2at81t.apps.googleusercontent.com',
                                  'rZlSSBIo4-IjsGlVcUxoKUaU',skip_jwt: true

@@ -30,18 +30,16 @@ gem 'devise'
 gem 'bootstrap-sass'
 gem 'omniauth'
 gem 'omniauth-facebook'
-<<<<<<< HEAD
 gem "omniauth-google-oauth2" 
 gem 'omniauth-oauth2'
 gem 'puma', '~> 3.4'
 gem "acts_as_follower"
-=======
+
 gem "omniauth-google-oauth2"
 
 gem 'omniauth-oauth2'
 gem 'puma', '~> 3.4'
 
->>>>>>> fbf350c8abd4b4e6cf1c839c62c094af2d63fa98
 # Use Unicorn as the app server
 # gem 'unicorn'
 
