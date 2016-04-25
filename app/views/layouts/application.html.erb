@@ -7,6 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+
 <nav class="navbar navbar-inverse">
   <div class="container">
     <div class="navbar-header">
@@ -24,6 +25,7 @@
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
               <%= current_user.name %>
+              
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" role="menu">
@@ -37,8 +39,31 @@
         <% end %>
       </ul>
     </div>
+
+
+    <%= javascript_include_tag "entangled-js.js" %>
+    <% if user_signed_in? %>
+      <script type="text/javascript">
+        var myId = "<%= current_user.id %>"
+        var notificationTalking = new Entangled('ws://localhost:3000/users/'+myId+'/notifications');
+        
+        notificationTalking.all( function(err, notification) {
+          // All messages available here
+          console.log(notification)
+        });
+
+        // Set up association  
+        //usersTalking.hasMany('notificaions');
+      
+      </script>
+    
+    <% end %>
+
   </div>
 </nav>
+
+
+
 
 <div class="container">
   <% flash.each do |key, value| %>

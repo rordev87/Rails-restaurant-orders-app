@@ -33,6 +33,7 @@ gem 'omniauth-facebook'
 gem "omniauth-google-oauth2" 
 gem 'omniauth-oauth2'
 gem 'puma', '~> 3.4'
+gem 'entangled'
 gem "acts_as_follower"
 
 gem "omniauth-google-oauth2"
