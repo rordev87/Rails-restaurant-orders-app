@@ -42,15 +42,35 @@
 
 
     <%= javascript_include_tag "entangled-js.js" %>
+
+  </div>
+</nav>
+<div id="notifications">
+    
+
+</div>
+
+
+
     <% if user_signed_in? %>
       <script type="text/javascript">
         var myId = "<%= current_user.id %>"
         var notificationTalking = new Entangled('ws://localhost:3000/users/'+myId+'/notifications');
         
-        notificationTalking.all( function(err, notification) {
+        notificationTalking.all( function(err, notifications) {
           // All messages available here
-          console.log(notification)
+          var holder=document.getElementById("notifications");
+          holder.innerHTML = "<ul>";
+          for(var i = notifications.length-1 ; i >= 0  ;i-- ){
+            holder.innerHTML += "<li>"+notifications[i].message+"</li>" 
+          }
+          holder.innerHTML += "</ul>"       
+
+        
+          console.log(notifications);
+
         });
+
 
         // Set up association  
         //usersTalking.hasMany('notificaions');
@@ -58,10 +78,6 @@
       </script>
     
     <% end %>
-
-  </div>
-</nav>
-
 
 
 
