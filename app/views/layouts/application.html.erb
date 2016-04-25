@@ -21,13 +21,20 @@
       </ul>
       <ul class="nav navbar-nav pull-right">
         <% if user_signed_in? %>
+       
         <%= link_to 'Log out', destroy_user_session_path, method: :delete %>
+                   <li id="notifications" class="dropdown" >
+                      
+                  </li>
+
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
               <%= current_user.name %>
               
               <span class="caret"></span>
             </a>
+
+
             <ul class="dropdown-menu" role="menu">
               <li><%= link_to 'Profile', edit_user_registration_path %></li>
               <li><%= link_to 'Log out', destroy_user_session_path, method: :delete %></li>
@@ -45,14 +52,10 @@
 
   </div>
 </nav>
-<div id="notifications">
-    
-
-</div>
-
 
 
     <% if user_signed_in? %>
+
       <script type="text/javascript">
         var myId = "<%= current_user.id %>"
 
@@ -77,16 +80,18 @@
         notificationTalking.all( function(err, notifications) {
           // All messages available here
           var holder=document.getElementById("notifications");
-          holder.innerHTML = "<ul>";
-          
+          //var newHolder = '<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example<span class="caret"></span></button><ul class="dropdown-menu">'
+          var newHolder = '<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> notifications<span class="caret"></span></a><ul class="dropdown-menu">'
+
+
           for( var i = notifications.length-1 ; i >= 0  ; i-- ){
             if(!notifications[i].isRead){
-              holder.innerHTML += "<li onclick="+"readNotification('"+notifications[i].id +"') >" + notifications[i].message+"</li>" 
+              newHolder += "<li onclick="+"readNotification('"+notifications[i].id +"') >" + notifications[i].message+"</li>"; 
               console.log(notifications[i]);
             }
           }
-          
-          holder.innerHTML += "</ul>"       
+          newHolder += "</ul>";
+          holder.innerHTML = newHolder;       
 
         
           
@@ -111,12 +116,28 @@
   <% end %>
 </div>
 
+
+
+
 <%= yield :top_content %>
 
 <div class="container">
     <h1><%= yield :header %></h1>
   <%= yield %>
 </div>
+
+<div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+  <span class="caret"></span></button>
+  <ul class="dropdown-menu">
+    <li><a href="#">HTML</a></li>
+    <li><a href="#">CSS</a></li>
+    <li><a href="#">JavaScript</a></li>
+  </ul>
+</div>
+Try it Yourself »
+
+
 
 </body>
 </html>
