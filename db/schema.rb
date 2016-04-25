@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160423145017) do
+ActiveRecord::Schema.define(version: 20160425075408) do
 
   create_table "follows", force: :cascade do |t|
     t.integer  "followable_id",   limit: 4,                   null: false
@@ -48,8 +48,9 @@ ActiveRecord::Schema.define(version: 20160423145017) do
     t.text     "message",     limit: 65535
     t.integer  "sender_id",   limit: 4
     t.integer  "reciever_id", limit: 4
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.boolean  "is_read",                   default: false
   end
 
   create_table "orders", force: :cascade do |t|

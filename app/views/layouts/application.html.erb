@@ -55,19 +55,41 @@
     <% if user_signed_in? %>
       <script type="text/javascript">
         var myId = "<%= current_user.id %>"
+
         var notificationTalking = new Entangled('ws://localhost:3000/users/'+myId+'/notifications');
         
+
+        var readNotification = function(notificationId){
+           notificationTalking.find( notificationId , function(err, notification) {
+              
+              console.log(notification)
+
+              notification.$update({ isRead: true }, function(err, notification) {
+                // Do stuff after update
+            });
+
+           });
+          
+          
+        }
+
+
         notificationTalking.all( function(err, notifications) {
           // All messages available here
           var holder=document.getElementById("notifications");
           holder.innerHTML = "<ul>";
-          for(var i = notifications.length-1 ; i >= 0  ;i-- ){
-            holder.innerHTML += "<li>"+notifications[i].message+"</li>" 
+          
+          for( var i = notifications.length-1 ; i >= 0  ; i-- ){
+            if(!notifications[i].isRead){
+              holder.innerHTML += "<li onclick="+"readNotification('"+notifications[i].id +"') >" + notifications[i].message+"</li>" 
+              console.log(notifications[i]);
+            }
           }
+          
           holder.innerHTML += "</ul>"       
 
         
-          console.log(notifications);
+          
 
         });
 

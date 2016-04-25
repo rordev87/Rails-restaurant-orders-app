@@ -15,5 +15,21 @@ class NotificationsController < ApplicationController
     end
   end
 
+  def show
+    broadcast do
+      @notification = Notification.find(params[:id])
+
+    end
+
+  end
+  def show
+    broadcast do
+      @notification = Notification.find(params[:id])
+      @notification.update(:is_read => true)
+    end
+
+  end
+
+
 
 end
