@@ -2,7 +2,9 @@ class HomeController < ApplicationController
   before_action :authenticate_user!
   respond_to :html, :json
   def getorderbyuser
-    @orders_of_me = OrderUserJoin.where(user_id: current_user.id).order(:created_at => :desc).limit(5).map{|m| Order.find(m.order_id)};
+    @orders_of_me = OrderUserJoin.where(user_id: current_user.id).order(:created_at => :desc).limit(5).map{|m| Order.find(m.order_id)} + Order.where(:user_id => current_user.id).map{|o| o};
+    @orders_of_me = @orders_of_me.uniq[0..4] 
+    #@orders_of_me = OrderUserJoin.all.map{|m| Order.find(m.order_id)};
     respond_with(@orders_of_me)
 
     #respond_to do |format|
