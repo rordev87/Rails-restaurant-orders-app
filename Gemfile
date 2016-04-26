@@ -14,6 +14,8 @@ gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
+gem 'autoprefixer-rails'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -33,6 +35,7 @@ gem 'omniauth-facebook'
 gem "omniauth-google-oauth2" 
 gem 'omniauth-oauth2'
 gem 'puma', '~> 3.4'
+gem 'entangled'
 gem "acts_as_follower"
 
 gem "omniauth-google-oauth2"

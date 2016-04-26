@@ -11,7 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425210110) do
+#ActiveRecord::Schema.define(version: 20160425210110) do
+
+ActiveRecord::Schema.define(version: 20160425222214) do
 
   create_table "follows", force: :cascade do |t|
     t.integer  "followable_id",   limit: 4,                   null: false
@@ -50,8 +52,16 @@ ActiveRecord::Schema.define(version: 20160425210110) do
     t.text     "message",     limit: 65535
     t.integer  "sender_id",   limit: 4
     t.integer  "reciever_id", limit: 4
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.boolean  "is_read",                   default: false
+  end
+
+  create_table "order_user_joins", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.integer  "order_id",   limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "orders", force: :cascade do |t|
@@ -63,12 +73,18 @@ ActiveRecord::Schema.define(version: 20160425210110) do
     t.datetime "updated_at",             null: false
   end
 
+<<<<<<< HEAD
   create_table "orders_users", force: :cascade do |t|
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.integer  "order_id",   limit: 4
     t.integer  "user_id",    limit: 4
     t.integer  "is_joined",  limit: 4
+=======
+  create_table "orders_users", id: false, force: :cascade do |t|
+    t.integer "user_id",  limit: 4
+    t.integer "order_id", limit: 4
+>>>>>>> 7f162e3ac91c9130a43838bafb2a3f6086bf9242
   end
 
   create_table "users", force: :cascade do |t|

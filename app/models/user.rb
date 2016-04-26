@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  include Entangled::Model
+  entangle
+  
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable ,
          :omniauthable 
@@ -8,8 +11,11 @@ class User < ActiveRecord::Base
         acts_as_followable
         acts_as_follower
         has_many :groups
-        has_many :orders , :through => :orders_users
-        has_many :orders_users
+
+        has_many :orders , :through => :order_user_joins
+        #has_and_belongs_to_many :orders
+        has_many :order_user_joins
+
         has_many :items
         has_many :notifications, :foreign_key => :user_id
   def self.from_omniauth(auth)

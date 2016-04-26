@@ -1,0 +1,99 @@
+
+
+
+
+<div>
+<div style="display:inline-block;margin:4px;" id="myOrders"></div>
+<div style="display:inline-block;margin:4px;" id="friendsOrders"></div>
+</div>
+
+<script>
+
+
+	var renderMyOrder = function(order){
+		return order.meal + " on " + order.created_at+"<br>";
+		
+	}
+	/*var renderFriendOrder = function(friendOrder){
+		order = friendOrder.
+		return order.admin.name + " has created an order from " + order.restaurant;
+		
+	}*/
+	
+	var renderFriendOrder = function(friendOrder){
+		var order = friendOrder.order
+		var name = friendOrder.admin.name
+		return name + " has created an order from " + order.restaurant;
+		
+	}
+
+	//renderOrder
+	myOrders();
+	function myOrders(){
+	$.ajax({url: "/theorders/my_orders.json", success: function(result){
+        $("#friendsOrders").html("");
+
+        //$("#div1").html(result);
+        console.log(result)
+        for(var i = 0 ; i < result.length ; i++){
+   			$("#friendsOrders").html($("#friendsOrders").html()+renderMyOrder(result[i])+"<br>")
+        	
+   		}
+        //
+    	},complete: function(){
+    		setTimeout(myOrders, 5000);
+    	} });
+	}
+
+
+	var findOrderUserAndShow = function(order){
+
+			$.ajax( {url:"/finduser/"+order.user_id+"/finduser.json" , 
+
+	   				success: function(r){
+
+	   				order.admin = r;
+	   				$("#myOrders").html($("#myOrders").html()+renderFriendOrder(order)+"<br>")
+	   				console.log(renderFriendOrder(order))
+	   			}
+	   		})
+	}
+	friendsOrders()
+	
+	function friendsOrders(){
+
+	$.ajax({url: "/theorders/friends_orders.json", success: function(result){
+        //$("#div1").html(result);
+   		
+        $("#myOrders").html("");
+   		for(var i = 0 ; i<result.length ; i++){
+   			//renderFriendOrder(result[i])
+   			$("#myOrders").html($("#myOrders").html()+renderFriendOrder(result[i])+"<br>")
+   			//result[i].admin = null;
+	   			//var x = i;
+	   			//var res = result;
+   				//findOrderUserAndShow(result[i]);
+	   		
+   			
+
+   		}
+
+   		/*for(var i = 0 ; i<result.length ; i++){
+        	$.ajax({url: "/finduser/:id/finduser.json".replace(":id",result[i].user_id), success: function (r) {
+        		// body...
+        		result[i].user = r;
+        	}
+        	 
+        })*/
+		//console.log(result)
+     
+     
+    } , complete: function(){
+    		setTimeout(friendsOrders, 5000);
+
+    }
+    
+})
+} ;
+</script>
+
