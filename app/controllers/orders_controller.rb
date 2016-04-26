@@ -37,9 +37,19 @@ class OrdersController < ApplicationController
   def edit
   end
 
+
+  def joinOrder
+    @order=Order.find(params[:order_id])
+    @orderUser=OrderUserJoin.where(:order_id => params[:order_id]).where(:user_id => params[:user_id]).take
+    @orderUser.update("is_joined" => 1)
+    create_notification( "<a rel='nofollow' data-method='put' href='/orders/#{params[:order_id]}/#{params[:user_id]}'>Join</a>" , reciever_id = @order.user_id ,sender_id = params[:user_id] )
+    redirect_to @order
+  end
+
   def removeUser
     @order=Order.find(params[:order_id])
     OrderUserJoin.where(:order_id => params[:order_id]).where(:user_id => params[:user_id]).take.destroy
+    
     redirect_to @order
   end
 
