@@ -20,8 +20,8 @@
         <td><%= order.meal %></td>
         <td><%= order.restaurant %></td>
         <td><%= order.status %></td>
-        <td><%= OrdersUser.where(order_id: order.id).count %></td>
-        <td><%= OrdersUser.where(order_id: order.id).where(is_joined: 1).count %></td>
+        <td><%= OrderUserJoin.where(order_id: order.id).count %></td>
+        <td><%= OrderUserJoin.where(order_id: order.id).where(is_joined: 1).count %></td>
         <td><%= link_to 'Show',  order_path(order) %></td>
         <td><%= if order.status == "waiting"  
                   link_to 'Finish', order, method: :put  

@@ -10,10 +10,11 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
+    @order=Order.where(id: params[:id]).take
     @item=Item.new
     @invitedFriends=Array.new
     @joinedFriends=Array.new
-    OrdersUser.where(:order_id => params[:id]).each do |orderuser|
+    OrderUserJoin.where(:order_id => params[:id]).each do |orderuser|
       @user=User.find(orderuser.user_id)
       @invitedFriends.push(@user)
       if(orderuser.is_joined == 1)
@@ -38,7 +39,7 @@ class OrdersController < ApplicationController
 
   def removeUser
     @order=Order.find(params[:order_id])
-    OrdersUser.where(:order_id => params[:order_id]).where(:user_id => params[:user_id]).take.destroy
+    OrderUserJoin.where(:order_id => params[:order_id]).where(:user_id => params[:user_id]).take.destroy
     redirect_to @order
   end
 
