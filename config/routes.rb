@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   end
   resources :groups
   devise_for :users , :controllers => { :omniauth_callbacks => "callbacks" }
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -21,6 +22,10 @@ Rails.application.routes.draw do
     sockets_for :notifications
   end
 
+  get 'theorders/my_orders(.:format)', to: 'home#getorderbyuser'
+  get 'theorders/friends_orders(.:format)', to: 'home#getorderbyfriends'
+  get 'finduser/:id/finduser(.:format)', to: 'home#getuser'
+  
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
  root  'pages#index'
