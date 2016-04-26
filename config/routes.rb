@@ -2,7 +2,6 @@ Rails.application.routes.draw do
 
   resources :orders do
     resources :items
-  
   end
   resources :groups
   devise_for :users , :controllers => { :omniauth_callbacks => "callbacks" }
@@ -11,7 +10,19 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
- root  'pages#index'
+
+ resources :follows
+match 'users/newfollow' => 'users#newfollow', :via => :post
+ resources :users do
+    member do
+      get :follow
+      get :unfollow
+     # post '/newfollow', to: 'users#newfollow'
+    end
+ end
+
+  root  'pages#index'
+
   
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
