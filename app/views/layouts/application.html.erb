@@ -90,8 +90,11 @@
             if(!notifications[i].isRead){
               newHolder += "<li onclick="+"readNotification('"+notifications[i].id +"') >" + notifications[i].message+"</li>"; 
               console.log(notifications[i]);
+
+
             }
           }
+          newHolder += '<%= link_to "show all notifications" , "/allNotifications/#{current_user.id}" %>'
           newHolder += "</ul>";
           holder.innerHTML = newHolder;       
 

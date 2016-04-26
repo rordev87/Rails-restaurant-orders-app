@@ -7,6 +7,10 @@ class NotificationsController < ApplicationController
     end
   end
 
+  def html_index
+      @notifications = Notification.where(reciever_id: params[:id])
+  end
+
   def create
     broadcast do
       #@child = Notification.new(child_params)
@@ -18,7 +22,6 @@ class NotificationsController < ApplicationController
   def show
     broadcast do
       @notification = Notification.find(params[:id])
-
     end
 
   end
