@@ -15,10 +15,93 @@
   <%= @order.status %>
 </p>
 
-<p>
-  <strong>User:</strong>
-  <%= @order.user_id %>
-</p>
+<h2>items</h2>
+<table>
+	<thead>
+	    <tr>
+	    	<th>User</th>
+	      	<th>Name</th>
+	      	<th>Quantity</th>
+	      	<th>Price</th>
+	      	<th>Comment</th>
+	      	<th>Delete</th>
+	    </tr>
+	</thead>
+	<tbody>
+		<%= render @order.items %>
+	</tbody>
+	
+</table>
+
+<h2>Invited</h2>
+<table>
+	<thead>
+	    <tr>
+	    	<th>User</th>
+	      	<th>email</th>
+	      	<th>Delete</th>
+	    </tr>
+	</thead>
+	<tbody>
+		<% @invitedFriends.each do |friend| %>
+      		<tr>
+        		<td><%= friend.name %></td>
+        		<td><%= friend.email %></td>
+        		<td><%= link_to 'Destroy',  removeUserfromorder_path(@order.id, friend.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      		</tr>
+    	<% end %>
+	</tbody>
+	
+</table>
+
+<h2>Joined</h2>
+<table>
+	<thead>
+	    <tr>
+	    	<th>User</th>
+	      	<th>email</th>
+	      	<th>Delete</th>
+	    </tr>
+	</thead>
+	<tbody>
+		<% @joinedFriends.each do |friend| %>
+      		<tr>
+        		<td><%= friend.name %></td>
+        		<td><%= friend.email %></td>
+        		<td><%= link_to 'Destroy',  removeUserfromorder_path(@order.id, friend.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      		</tr>
+    	<% end %>
+	</tbody>
+	
+</table>
+
+<%= form_for(@item, url: order_items_path(@order.id)) do |f| %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :quantity %><br>
+    <%= f.number_field :quantity %>
+  </div>
+  <div class="field">
+    <%= f.label :price %><br>
+    <%= f.number_field :price %>
+  </div>
+  <div class="field">
+    <%= f.label :comment %><br>
+    <%= f.text_area :comment %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+
+
+
+
 
 <%= link_to 'Edit', edit_order_path(@order) %> |
 <%= link_to 'Back', orders_path %>
