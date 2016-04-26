@@ -52,6 +52,7 @@ match 'users/newfollow' => 'users#newfollow', :via => :post
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
   delete '/orders/:order_id/:user_id', to: 'orders#removeUser', as: 'removeUserfromorder'
+  put '/orders/:order_id/:user_id', to: 'orders#joinOrder', as: 'joinuserinorder'
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 

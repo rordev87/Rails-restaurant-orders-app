@@ -40,6 +40,7 @@
 	    	<th>User</th>
 	      	<th>email</th>
 	      	<th>Delete</th>
+          <th>Join</th>>
 	    </tr>
 	</thead>
 	<tbody>
@@ -47,7 +48,12 @@
       		<tr>
         		<td><%= friend.name %></td>
         		<td><%= friend.email %></td>
-        		<td><%= link_to 'Destroy',  removeUserfromorder_path(@order.id, friend.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        		<td><%= if current_user.id == @order.user_id
+                      link_to 'Destroy',  removeUserfromorder_path(@order.id, friend.id), method: :delete, data: { confirm: 'Are you sure?' }
+                    end %></td>
+            <td><%= if current_user.id == @order.user_id || current_user.id == friend.id
+                      link_to 'Join',  joinuserinorder_path(@order.id, friend.id), method: :put 
+                    end %></td>
       		</tr>
     	<% end %>
 	</tbody>
@@ -68,7 +74,9 @@
       		<tr>
         		<td><%= friend.name %></td>
         		<td><%= friend.email %></td>
-        		<td><%= link_to 'Destroy',  removeUserfromorder_path(@order.id, friend.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        		<td><%=  if current_user.id == @order.user_id
+                       link_to 'Destroy',  removeUserfromorder_path(@order.id, friend.id), method: :delete, data: { confirm: 'Are you sure?' } 
+                       end %></td>
       		</tr>
     	<% end %>
 	</tbody>
