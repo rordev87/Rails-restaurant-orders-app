@@ -6,17 +6,42 @@ class GroupsController < ApplicationController
   def index
     @groups = Group.all
     @group = current_user.groups.build
+    @usergroup=UserGroup.all
   end
 
   # GET /groups/1
   # GET /groups/1.json
   def show
+    @usergroup=UserGroup.all
+    @users=User.all
 
   end
 
   # GET /groups/new
-  def new
-    
+  def new_member
+    @email = params[:user][:email]
+    if @email!=""
+    # puts "***********************" + @email + "*****************************"
+     @user = User.find_by_email(@email)
+     @group = Group.find(params[:id])
+
+     # if current_user.following?(@user)
+        @usergroup = UserGroup.new()
+        @usergroup.group_id = @group.id
+        @usergroup.user_id = @user.id
+        @usergroup.save
+
+        # UserGroup.new(user_id: @user.id , group_id:@group.id)
+        #  flash[:notice] = "Successfully created post."
+          redirect_to groups_path
+        #else
+        #  render action: 'index'
+        #end
+        #redirect_to groups_path
+      # end
+   else
+    redirect_to users_path {"error "}
+    end
   end
 
   # GET /groups/1/edit

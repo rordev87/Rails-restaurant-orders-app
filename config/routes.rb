@@ -8,7 +8,15 @@ Rails.application.routes.draw do
   resources :orders do
     resources :items
   end
-  resources :groups
+  resources :groups do
+ member do
+      post :new_member
+     
+     # post '/newfollow', to: 'users#newfollow'
+    end
+ end
+ 
+  # match 'groups/new_member' => 'groups#new_member', :via => :post
   devise_for :users , :controllers => { :omniauth_callbacks => "callbacks" }
 
   # The priority is based upon order of creation: first created -> highest priority.

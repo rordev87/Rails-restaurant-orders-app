@@ -19,6 +19,9 @@ class User < ActiveRecord::Base
         has_many :items
         has_many :notifications, :foreign_key => :user_id
 
+        has_many :user_groups
+        has_many :groups, through: :user_groups
+
         
   def self.from_omniauth(auth)
       where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
