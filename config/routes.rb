@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   get 'theorders/friends_orders(.:format)', to: 'home#getorderbyfriends'
   get 'finduser/:id/finduser(.:format)', to: 'home#getuser'
   
+  get 'allNotifications/:id', to: 'notifications#html_index'
+  
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 

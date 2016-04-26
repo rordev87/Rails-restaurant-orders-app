@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160426121816) do
+ActiveRecord::Schema.define(version: 20160426152300) do
 
   create_table "follows", force: :cascade do |t|
     t.integer  "followable_id",   limit: 4,                   null: false
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20160426121816) do
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
     t.boolean  "is_read",                   default: false
+    t.boolean  "is_seen",                   default: false
   end
 
   create_table "order_user_joins", force: :cascade do |t|
