@@ -1,15 +1,25 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all
+    @orders = Order.where(user_id: current_user.id.to_i).paginate(:page => params[:page], :per_page => 5)
   end
 
   # GET /orders/1
   # GET /orders/1.json
   def show
+    @item=Item.new
+    @invitedFriends=Array.new
+    @joinedFriends=Array.new
+    OrdersUser.where(:order_id => params[:id]).each do |orderuser|
+      @user=User.find(orderuser.user_id)
+      @invitedFriends.push(@user)
+      if(orderuser.is_joined == 1)
+        @joinedFriends.push(@user)
+      end
+    end
   end
 
   # GET /orders/new
@@ -19,6 +29,12 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
+  end
+
+  def removeUser
+    @order=Order.find(params[:order_id])
+    OrdersUser.where(:order_id => params[:order_id]).where(:user_id => params[:user_id]).take.destroy
+    redirect_to @order
   end
 
   # POST /orders
@@ -40,12 +56,13 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
+    
     respond_to do |format|
-      if @order.update(order_params)
-        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
-        format.json { render :show, status: :ok, location: @order }
+      if @order.update("status" => "finished")
+        format.html { redirect_to orders_url, notice: 'Order was successfully updated.' }
+        format.json { render :index, status: :ok, location: @order }
       else
-        format.html { render :edit }
+        format.html { render :index }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end

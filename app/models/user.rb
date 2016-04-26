@@ -8,7 +8,8 @@ class User < ActiveRecord::Base
         acts_as_followable
         acts_as_follower
         has_many :groups
-        has_many :orders , :through => :users_orders
+        has_many :orders , :through => :orders_users
+        has_many :orders_users
         has_many :items
         has_many :notifications, :foreign_key => :user_id
   def self.from_omniauth(auth)

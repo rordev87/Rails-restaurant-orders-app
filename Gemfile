@@ -40,6 +40,8 @@ gem "omniauth-google-oauth2"
 gem 'omniauth-oauth2'
 gem 'puma', '~> 3.4'
 
+gem 'will_paginate', '~> 3.1'
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 

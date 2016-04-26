@@ -1,0 +1,13 @@
+
+		<tr>
+	    	<th><%= User.find(item.user_id).email %></th>
+	      	<th><%= item.name %></th>
+	      	<th><%= item.quantity %></th>
+	      	<th><%= item.price %></th>
+	      	<th><%= item.comment %></th>
+	      	<th><%= if item.user_id.to_i == current_user.id.to_i
+	      	 link_to 'Destroy item', [item.order, item],
+               method: :delete,
+               data: { confirm: 'Are you sure?' }
+               end %></th>
+	    </tr>

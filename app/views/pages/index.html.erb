@@ -1,10 +1,24 @@
-<% content_for :top_content do %>
-  <div class="jumbotron">
-    <div class="container">
-      <h1>Welcome!</h1>
-      <p>Register to get started.</p>
-      <p>
-      </p>
-    </div>
-  </div>
-<% end %>
+<table>
+  <thead>
+    <tr>
+      <th>Meal</th>
+      <th>Restaurant</th>
+      <th>Status</th>
+      <th>User</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.meal %></td>
+        <td><%= order.restaurant %></td>
+        <td><%= order.status %></td>
+        <td><%= order.user_id %></td>
+        <td><%= order.user_id %></td>
+        <td><%= link_to 'Show',  order_path(order) %></td>
+        
+    <% end %>
+  </tbody>
+</table>

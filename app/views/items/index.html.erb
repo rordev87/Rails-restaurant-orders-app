@@ -24,14 +24,13 @@
         <td><%= item.quantity %></td>
         <td><%= item.price %></td>
         <td><%= item.comment %></td>
-        <td><%= link_to 'Show', item %></td>
-        <td><%= link_to 'Edit', edit_item_path(item) %></td>
+        <td><%= link_to 'Show', order_items_path %></td>
         <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
+<%= will_paginate @items %>
 <br>
 
-<%= link_to 'New Item', new_item_path %>
+<%= link_to 'New Item', new_order_item_path %>
