@@ -1,0 +1,38 @@
+<%- model_class = User -%>
+<div class="page-header">
+  <h1>Friends</h1>
+</div>
+
+<%= form_for User.new , url: users_newfollow_path do |f| %>
+  <p>
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+
+     <%= f.submit "Add Friend" %>
+     
+  <!-- class :'btn btn-primary'  -->
+</p>
+<% end %>
+<fieldset class="col-sm-12" style="overflow-y: scroll; margin-top:10px;">
+  <legend>Friends List:</legend>
+  <% @users.each do |user| %>
+    <% unless user == current_user %>
+    <% if current_user.following?(user) %>
+    <div class="col-sm-4">
+      <img class="col-sm-5" src="">
+      <div class="col-sm-6">
+        <span class="col-sm-12">
+          <%= user.name %></span>
+        <span class="col-sm-12" id="follow_user<%=user.id%>">
+                <%= link_to(unfollow_user_path(user), :remote => true, :class => 'btn btn-primary') do %>
+                <i class="icon-remove icon-white"></i>
+                 Un-Friend
+                <% end %>
+                <% else %>
+              <% end %>
+            </span>
+             <% end %>
+        </div>
+    </div>
+  <% end %>
+</fieldset>

@@ -13,14 +13,16 @@
     <div class="navbar-header">
       <%= link_to 'YalNotlob',  user_session , class: 'navbar-brand' %>
     </div>
+    <% if user_signed_in? %>
     <div id="navbar">
       <ul class="nav navbar-nav">
         <li><%= link_to 'Home',  user_session %></li>
-        <li><%= link_to 'ay7aga',  user_session %></li>
-        <li><%= link_to 'ay7gten',  user_session %></li>
+         <!-- friends_path -->
+        <li><%= link_to 'Freinds',  users_path %></li>
+        <li><%= link_to 'Group',  groups_path %></li>
+        <li><%= link_to 'Order',  orders_path %></li>
       </ul>
       <ul class="nav navbar-nav pull-right">
-        <% if user_signed_in? %>
        
         <%= link_to 'Log out', destroy_user_session_path, method: :delete %>
                    <li id="notifications" class="dropdown" >
@@ -126,16 +128,7 @@
   <%= yield %>
 </div>
 
-<div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-  <span class="caret"></span></button>
-  <ul class="dropdown-menu">
-    <li><a href="#">HTML</a></li>
-    <li><a href="#">CSS</a></li>
-    <li><a href="#">JavaScript</a></li>
-  </ul>
-</div>
-Try it Yourself »
+
 
 
 

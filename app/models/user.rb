@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
 
         has_many :items
         has_many :notifications, :foreign_key => :user_id
+
+        
   def self.from_omniauth(auth)
       where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
         user.provider = auth.provider

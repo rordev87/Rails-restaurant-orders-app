@@ -1,6 +1,22 @@
 <p id="notice"><%= notice %></p>
+ 
+ <%= form_for(@group) do |f| %>
+  
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="actions">
+  <%= f.submit  %>
+  </div>
+<% end %>
+
+
+
 
 <h1>Listing Groups</h1>
+
 
 <table>
   <thead>
@@ -15,13 +31,17 @@
       <tr>
         <td><%= group.name %></td>
         <td><%= link_to 'Show', group %></td>
-        <td><%= link_to 'Edit', edit_group_path(group) %></td>
         <td><%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
+<p>
+  <strong>Name:</strong>
+  <%= @group.name %>
+</p>
+
+<%= link_to 'Back', groups_path %>
 <br>
 
-<%= link_to 'New Group', new_group_path %>
