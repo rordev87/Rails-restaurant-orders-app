@@ -15,6 +15,8 @@ class HomeController < ApplicationController
   end
 
 
+
+
   def getuser
     @user = User.find(params[:id]); 
     respond_with(@user)

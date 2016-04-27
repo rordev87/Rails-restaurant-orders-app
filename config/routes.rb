@@ -34,6 +34,8 @@ Rails.application.routes.draw do
   get 'finduser/:id/finduser(.:format)', to: 'home#getuser'
   
   get 'allNotifications/:id', to: 'notifications#html_index'
+  get 'notifications/:id/clear' , to: 'notifications#see_all_notification_of_me'
+
   
   # You can have the root of your site routed with "root"
   # root 'welcome#index'

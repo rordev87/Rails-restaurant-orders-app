@@ -25,6 +25,7 @@
       <ul class="nav navbar-nav pull-right">
        
         <%= link_to 'Log out', destroy_user_session_path, method: :delete %>
+         <li id="UnSeenNotifications" style="color:red;"></li>
                    <li id="notifications" class="dropdown" >
                       
                   </li>
@@ -58,7 +59,12 @@
 
     <% if user_signed_in? %>
 
+
+
       <script type="text/javascript">
+
+        
+
         var myId = "<%= current_user.id %>"
 
         var notificationTalking = new Entangled('ws://localhost:3000/users/'+myId+'/notifications');
@@ -79,21 +85,69 @@
         }
 
 
+
+        var NotificationsWrapper = function(){
+          var that = this;
+
+          this.isNotificationsClicked = function(){
+            return $("#notifications").hasClass("open")
+                                 
+          }
+
+          this.seeAllNotifications = function(){
+            $.ajax({url: '<%= "/notifications/#{current_user.id}/clear" %>'});
+          }
+          this.setNotificationScene = function (num) {
+            if(num == 0){
+              num="";
+            }
+            $("#UnSeenNotifications").html(num+"")
+          }
+          
+          this.checkNotifictionClicks = function(){
+            if(this.isNotificationsClicked()){
+              this.seeAllNotifications();
+              this.setNotificationScene(0);              
+            }
+
+            setTimeout(function(){that.checkNotifictionClicks()},100)
+          }
+
+        }
+        var noteWrapper = new NotificationsWrapper();
+        noteWrapper.checkNotifictionClicks();
+
+  
+
+
         notificationTalking.all( function(err, notifications) {
           // All messages available here
           var holder=document.getElementById("notifications");
           //var newHolder = '<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example<span class="caret"></span></button><ul class="dropdown-menu">'
-          var newHolder = '<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> notifications<span class="caret"></span></a><ul class="dropdown-menu">'
+          var newHolder = '<a id="noteClicker" class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> <%= fa_icon "bell-o" , :class => "fa-2x"%><span class="caret"></span></a><ul class="dropdown-menu">'
 
+          var numberOfUnSeen = 0;
 
           for( var i = notifications.length-1 ; i >= 0  ; i-- ){
             if(!notifications[i].isRead){
-              newHolder += "<li onclick="+"readNotification('"+notifications[i].id +"') >" + notifications[i].message+"</li>"; 
-              console.log(notifications[i]);
+              newHolder += "<li onclick="+"readNotification('"+notifications[i].id +"') >" + notifications[i].message+"</li>";
+            if(!notifications[i].isSeen){
+                numberOfUnSeen += 1;              
+            }
+
+              //console.log(notifications[i]);
 
 
             }
           }
+          if($("#notifications").hasClass("open")){
+               numberOfUnSeen = 0;              
+
+          }
+          noteWrapper.setNotificationScene(numberOfUnSeen)
+          //$("#UnSeenNotifications").html(numberOfUnSeen)
+
+
           newHolder += '<%= link_to "show all notifications" , "/allNotifications/#{current_user.id}" %>'
           newHolder += "</ul>";
           holder.innerHTML = newHolder;       
