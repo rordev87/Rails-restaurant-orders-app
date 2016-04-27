@@ -21,6 +21,7 @@ class NotificationsController < ApplicationController
 
   def see_all_notification_of_me
     Notification.where(:reciever_id => params[:id]).update_all( :is_seen => true  )
+    
   end
 
 
