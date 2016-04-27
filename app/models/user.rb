@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
         has_many :order_user_joins
         has_many :orders, through: :order_user_joins
 
+        validates_uniqueness_of :name
         
   def self.from_omniauth(auth)
       where(provider: auth.provider, uid: auth.uid).first_or_create do |user|

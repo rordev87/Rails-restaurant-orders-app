@@ -2,16 +2,77 @@
 
 
 
-<div>
-<div style="display:inline-block;margin:4px;" id="myOrders"></div>
-<div style="display:inline-block;margin:4px;" id="friendsOrders"></div>
+<div class="row big-box">
+<div class="col-md-4 box" id="myOrders"></div>
+<div class="col-md-push-4 col-md-4 box" id="friendsOrders"></div>
 </div>
 
 <script>
 
 
+	var GeneralOrderBoxMaker = function ( place , header , url , render_function ) {
+		this.place = "#"+place;
+		this.renderBody = render_function;
+		this.header = header;
+		this.upperDepaga = "<h2>"+header+"</h2><ul>"; 
+		this.url = url;
+		this.lowerDepaga = "</ul>";
+		that = this;
+		this.render = function(){
+			var ctx=that;
+			$.ajax( {url:this.url , success: function(result){
+	    			var text = "";
+		    		text +=  ctx.upperDepaga;
+					text += ctx.renderBody(result);
+					text += ctx.lowerDepaga;
+					$(ctx.place).html(text);
+				}
+			,complete: function(){
+				setTimeout(function(){ctx.render()}, 5000);	
+			}
+		})
+			
+
+		}
+	} 
+	var cleanMyOrder = new GeneralOrderBoxMaker("myOrders","the order i made","/theorders/my_orders.json",function(result){
+		  var text = "";
+		  for(var i = 0 ; i < result.length ; i++){
+   			text += "<li>"+result[i].meal + " on " + result[i].created_at+"</li>";
+        	
+   		  }
+   		  if(text == ""){
+   		  	text= "no activities right now"
+   		  }
+
+   		  return text;
+
+	}) 
+	cleanMyOrder.render(); 
+
+	var cleanFriendsOrder = new GeneralOrderBoxMaker("friendsOrders","friendsActivity","/theorders/friends_orders.json",function(result){
+		
+		  var text = "";
+		  for(var i = 0 ; i < result.length ; i++){
+			var order = result[i].order
+			var name = result[i].admin.name
+
+   			text += "<li>"+name + " has created an order from " + order.restaurant+"</li>";
+;
+        	
+   		  }
+   		  if(text == ""){
+   		  	text= "no friends activity right now"
+   		  }
+
+   		  return text;
+
+	}) 
+	cleanFriendsOrder.render(); 
+
+
 	var renderMyOrder = function(order){
-		return order.meal + " on " + order.created_at+"<br>";
+		return "<li>"+order.meal + " on " + order.created_at+"</li>";
 		
 	}
 	/*var renderFriendOrder = function(friendOrder){
@@ -28,17 +89,18 @@
 	}
 
 	//renderOrder
-	myOrders();
+	//myOrders();
 	function myOrders(){
 	$.ajax({url: "/theorders/my_orders.json", success: function(result){
-        $("#friendsOrders").html("");
+        $("#friendsOrders").html("<h2>my orders</h2><ul>");
 
         //$("#div1").html(result);
         console.log(result)
         for(var i = 0 ; i < result.length ; i++){
-   			$("#friendsOrders").html($("#friendsOrders").html()+renderMyOrder(result[i])+"<br>")
+   			$("#friendsOrders").html($("#friendsOrders").html()+renderMyOrder(result[i]))
         	
    		}
+   		$("#friendsOrders").append("</ul>");
         //
     	},complete: function(){
     		setTimeout(myOrders, 5000);
@@ -53,12 +115,13 @@
 	   				success: function(r){
 
 	   				order.admin = r;
-	   				$("#myOrders").html($("#myOrders").html()+renderFriendOrder(order)+"<br>")
+
+	   				$("#myOrders").html($("#myOrders").html()+renderFriendOrder(order))
 	   				console.log(renderFriendOrder(order))
 	   			}
 	   		})
 	}
-	friendsOrders()
+	//friendsOrders()
 	
 	function friendsOrders(){
 

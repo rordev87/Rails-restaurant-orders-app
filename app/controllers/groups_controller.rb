@@ -26,9 +26,9 @@ class GroupsController < ApplicationController
      @group = Group.find(params[:id])
 
      # if current_user.following?(@user)
-        @usergroup = UserGroup.new()
-        @usergroup.group_id = @group.id
-        @usergroup.user_id = @user.id
+        @usergroup = UserGroup.new(
+        group_id = @group.id,
+        user_id = @user.id )
         @usergroup.save
 
         # UserGroup.new(user_id: @user.id , group_id:@group.id)
@@ -52,6 +52,7 @@ class GroupsController < ApplicationController
   # POST /groups.json
   def create
     @group = current_user.groups.build(group_params)
+    @group.user_id = current_user.id
 
     respond_to do |format|
       if @group.save

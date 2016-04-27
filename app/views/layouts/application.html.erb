@@ -7,7 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<div class="wrapper" >
 <nav class="navbar navbar-inverse">
   <div class="container">
     <div class="navbar-header">
@@ -24,7 +24,7 @@
       </ul>
       <ul class="nav navbar-nav pull-right">
        
-        <%= link_to 'Log out', destroy_user_session_path, method: :delete %>
+         <li id="UnSeenNotifications" style="color:red;"></li>
                    <li id="notifications" class="dropdown" >
                       
                   </li>
@@ -46,6 +46,10 @@
           <li><%= link_to 'Log In', new_user_session_path %></li>
           <li><%= link_to 'Sign Up', new_user_registration_path %></li>
         <% end %>
+
+
+        <li><%= link_to 'Log out', destroy_user_session_path, method: :delete %></li>
+        
       </ul>
     </div>
 
@@ -58,42 +62,107 @@
 
     <% if user_signed_in? %>
 
+
+
       <script type="text/javascript">
+
+        
+
         var myId = "<%= current_user.id %>"
 
         var notificationTalking = new Entangled('ws://localhost:3000/users/'+myId+'/notifications');
         
 
-        var readNotification = function(notificationId){
+        var readNotification = function(notificationId ,orderId){
            notificationTalking.find( notificationId , function(err, notification) {
               
-              console.log(notification)
+              //console.log(notification)
 
               notification.$update({ isRead: true }, function(err, notification) {
                 // Do stuff after update
+              
             });
 
+
            });
-          
+            window.location.replace("/orders/"+orderId)
           
         }
+
+
+
+        var NotificationsWrapper = function(){
+          var that = this;
+
+          this.isNotificationsClicked = function(){
+            return $("#notifications").hasClass("open")
+                                 
+          }
+
+          this.seeAllNotifications = function(){
+            $.ajax({url: '<%= "/notifications/#{current_user.id}/clear" %>'});
+          }
+          this.setNotificationScene = function (num) {
+            if(num == 0){
+              num="";
+            }
+            $("#UnSeenNotifications").html(num+"")
+          }
+          
+          this.checkNotifictionClicks = function(){
+            if(this.isNotificationsClicked()){
+              this.seeAllNotifications();
+              this.setNotificationScene(0);              
+            }
+
+            setTimeout(function(){that.checkNotifictionClicks()},100)
+          }
+
+        }
+        var noteWrapper = new NotificationsWrapper();
+        noteWrapper.checkNotifictionClicks();
+
+  
 
 
         notificationTalking.all( function(err, notifications) {
           // All messages available here
           var holder=document.getElementById("notifications");
           //var newHolder = '<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example<span class="caret"></span></button><ul class="dropdown-menu">'
-          var newHolder = '<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> notifications<span class="caret"></span></a><ul class="dropdown-menu">'
+          var newHolder = '<a id="noteClicker" class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> <%= fa_icon "bell-o" , :class => "fa-2x"%><span class="caret"></span></a><ul class="dropdown-menu">'
 
+          var numberOfUnSeen = 0;
+          var limitOfNotification = notifications.length-11;
+          limitOfNotification = Math.max(0,limitOfNotification);
+          var classes = "notif";
 
-          for( var i = notifications.length-1 ; i >= 0  ; i-- ){
-            if(!notifications[i].isRead){
-              newHolder += "<li onclick="+"readNotification('"+notifications[i].id +"') >" + notifications[i].message+"</li>"; 
-              console.log(notifications[i]);
+          for( var i = notifications.length-1 ; i >= limitOfNotification  ; i-- ){
+            if(notifications[i].isRead){
+              classes = "notif dark";              
+            }
+            else{
+              classes = "notif"; 
+            }
+
+            if(!notifications[i].isRead|| true){
+              newHolder += "<li class='"+classes+"' onclick="+"readNotification('"+notifications[i].id +"','"+notifications[i].orderId+"') >" + notifications[i].message+"</li>";
+            if(!notifications[i].isSeen){
+                numberOfUnSeen += 1;              
+            }
+
+              //console.log(notifications[i]);
 
 
             }
           }
+          if($("#notifications").hasClass("open")){
+               numberOfUnSeen = 0;              
+
+          }
+          noteWrapper.setNotificationScene(numberOfUnSeen)
+          //$("#UnSeenNotifications").html(numberOfUnSeen)
+
+
           newHolder += '<%= link_to "show all notifications" , "/allNotifications/#{current_user.id}" %>'
           newHolder += "</ul>";
           holder.innerHTML = newHolder;       
@@ -131,9 +200,11 @@
   <%= yield %>
 </div>
 
+<div class="push"></div>
 
-
-
-
+</div>
+<div class="footer">
+        <p>powered by phawzy</p>
+</div>
 </body>
 </html>
