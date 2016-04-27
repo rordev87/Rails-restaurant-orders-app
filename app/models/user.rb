@@ -11,16 +11,19 @@ class User < ActiveRecord::Base
         acts_as_followable
         acts_as_follower
         has_many :groups
+        has_many :orders
 
-        has_many :orders , :through => :order_user_joins
-        #has_and_belongs_to_many :orders
-        has_many :order_user_joins
+        #has_many :orders , :through => :order_user_joins
+        #has_many :order_user_joins
 
         has_many :items
         has_many :notifications, :foreign_key => :user_id
 
         has_many :user_groups
         has_many :groups, through: :user_groups
+
+        has_many :order_user_joins
+        has_many :orders, through: :order_user_joins
 
         
   def self.from_omniauth(auth)

@@ -1,9 +1,12 @@
 class Order < ActiveRecord::Base
 
-	belongs_to :admin , :class_name => :User , :foreign_key => :user_id
-	has_many :users ,:through => :order_user_joins
 #	has_and_belongs_to_many :users
-    has_many :order_user_joins
+	acts_as_followable
+	belongs_to :admin, class_name: :User, foreign_key: :user_id 
+	has_many :order_user_joins
+	has_many :users, through: :order_user_joins
 	has_many :items
 
+	has_attached_file :image, styles: { medium: "300x300>"}
+  	validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 end

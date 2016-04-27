@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+
   # GET /orders
   # GET /orders.json
   def index
@@ -21,16 +22,15 @@ class OrdersController < ApplicationController
         @joinedFriends.push(@user)
       end
     end
+    @orderuserjoin = OrderUserJoin.all
   end
-
-
-
-   
-  
 
   # GET /orders/new
   def new
     @order = Order.new
+    @meal = @order.meal
+    @restaurant = @order.restaurant
+
   end
 
   # GET /orders/1/edit
@@ -56,7 +56,7 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    @order = Order.new(order_params)
+    @order = current_user.groups.build(order_params)
 
     respond_to do |format|
       if @order.save
@@ -97,7 +97,7 @@ class OrdersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
-#      @order = Order.find(params[:id])
+      @order = Order.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
