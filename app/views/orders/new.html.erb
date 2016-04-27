@@ -14,18 +14,16 @@
   <% end %>
 
   <div class="field">
-   <label>Order for:</label>
-             <select id = "myList">
-               <option value = "lunch">lunch</option>
-               <option value = "brackfast">brackfast</option>
-             </select>
+   <%= f.label :meal %> 
+   <%= select_tag(:meal, options_for_select([['lunch', "lunch"], ['brackfast', "brackfast"]], 1)) %>
   </div>
   <div class="field">
-    <%= f.label :restaurant %>: 
+    <%= f.label :restaurant %>
     <%= f.text_field :restaurant %>
   </div>
   <div class="field">
-	  <label> Friends:</label>
+	  <%= f.label :friend %>
+    <%= f.text_field :friend %>
 	<input type="text" list="friends" />
 
 	<datalist id="friends">

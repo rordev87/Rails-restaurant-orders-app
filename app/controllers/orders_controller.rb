@@ -60,8 +60,11 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    @order = current_user.groups.build(order_params)
-
+    @order = Order.new(order_params)
+    #puts params
+    @order.meal = params[:meal]
+    @order.status = "waiting"
+    @order.user_id = current_user.id
     respond_to do |format|
       if @order.save
         format.html { redirect_to @order, notice: 'Order was successfully created.' }
@@ -106,6 +109,6 @@ class OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:meal, :restaurant, :status, :user_id)
+      params.require(:order).permit(:meal, :restaurant )
     end
 end
