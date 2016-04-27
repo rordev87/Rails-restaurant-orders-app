@@ -62,8 +62,6 @@ ActiveRecord::Schema.define(version: 20160426152300) do
     t.datetime "updated_at",                              null: false
   end
 
-  add_index "items", ["order_id"], name: "index_items_on_order_id", using: :btree
-
   create_table "notifications", force: :cascade do |t|
     t.text     "message",     limit: 65535
     t.integer  "sender_id",   limit: 4
@@ -127,5 +125,9 @@ ActiveRecord::Schema.define(version: 20160426152300) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "items", "orders"
+  create_table "users_orders", force: :cascade do |t|
+    t.integer "user_id",  limit: 4
+    t.integer "order_id", limit: 4
+  end
+
 end
