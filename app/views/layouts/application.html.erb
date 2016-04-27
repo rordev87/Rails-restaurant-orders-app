@@ -73,17 +73,19 @@
         var notificationTalking = new Entangled('ws://localhost:3000/users/'+myId+'/notifications');
         
 
-        var readNotification = function(notificationId){
+        var readNotification = function(notificationId ,orderId){
            notificationTalking.find( notificationId , function(err, notification) {
               
-              console.log(notification)
+              //console.log(notification)
 
               notification.$update({ isRead: true }, function(err, notification) {
                 // Do stuff after update
+              
             });
 
+
            });
-          
+            window.location.replace("/orders/"+orderId)
           
         }
 
@@ -130,10 +132,20 @@
           var newHolder = '<a id="noteClicker" class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> <%= fa_icon "bell-o" , :class => "fa-2x"%><span class="caret"></span></a><ul class="dropdown-menu">'
 
           var numberOfUnSeen = 0;
+          var limitOfNotification = notifications.length-11;
+          limitOfNotification = Math.max(0,limitOfNotification);
+          var classes = "notif";
 
-          for( var i = notifications.length-1 ; i >= 0  ; i-- ){
-            if(!notifications[i].isRead){
-              newHolder += "<li onclick="+"readNotification('"+notifications[i].id +"') >" + notifications[i].message+"</li>";
+          for( var i = notifications.length-1 ; i >= limitOfNotification  ; i-- ){
+            if(notifications[i].isRead){
+              classes = "notif dark";              
+            }
+            else{
+              classes = "notif"; 
+            }
+
+            if(!notifications[i].isRead|| true){
+              newHolder += "<li class='"+classes+"' onclick="+"readNotification('"+notifications[i].id +"','"+notifications[i].orderId+"') >" + notifications[i].message+"</li>";
             if(!notifications[i].isSeen){
                 numberOfUnSeen += 1;              
             }
