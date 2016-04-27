@@ -14,10 +14,10 @@ class OrdersController < ApplicationController
     @item=Item.new
     @invitedFriends=Array.new
     @joinedFriends=Array.new
-    OrderUserJoin.where(:order_id => params[:id]).each do |orderuser|
-      @user=User.find(orderuser.user_id)
+    OrderUserJoin.where(:order_id => params[:id]).each do |orderUser|
+      @user=User.find(orderUser.user_id)
       @invitedFriends.push(@user)
-      if(orderuser.is_joined == 1)
+      if(orderUser.is_joined == 1)
         @joinedFriends.push(@user)
       end
     end
