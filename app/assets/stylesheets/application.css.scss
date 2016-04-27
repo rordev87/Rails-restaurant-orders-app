@@ -24,4 +24,30 @@
 }
 
 
+html, body {
+	height: 100%;
+}
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -2em;
+}
+.footer, .push {
+	height: 2em;
+}
+
+.footer{
+	background-color : black;
+}
+
+.footer> p {
+	margin-left:  auto;
+	margin-right:  auto;
+	padding-top:	0.5em;
+	text-align:center;
+	color: white;
+}
+
+
 
