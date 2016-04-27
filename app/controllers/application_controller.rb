@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
 
   protected
   
-  def create_notification( message , reciever_id = nil,sender_id = nil )
-  	Notification.create(:message => message, :reciever_id => reciever_id , :sender_id => sender_id   )
+  def create_notification( message , reciever_id = nil,sender_id = nil , order_id)
+  	Notification.create(:message => message, :reciever_id => reciever_id , :sender_id => sender_id , :order_id => order_id  )
 
   end
 

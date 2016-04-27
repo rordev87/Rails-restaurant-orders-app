@@ -24,6 +24,25 @@
 }
 
 
+.notif{
+	text-align:center;
+	cursor: pointer;
+	min-height: 35px;
+	margin-top: 0px;
+	padding-top: 10px; 	
+	min-width: 200px;
+	font-size: 16px;
+}
+
+.dark{
+	background-color: #aaa;
+	
+}
+
+.notif:hover{
+	background-color: #999;
+}
+
 html, body {
 	height: 100%;
 }

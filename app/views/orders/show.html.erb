@@ -10,6 +10,7 @@
   <%= @order.restaurant %>
 </p>
 
+
 <p>
   <strong>Status:</strong>
   <%= @order.status %>
@@ -59,6 +60,16 @@
   </div>
 <% end %>
 
+<h2>Invite a friend</h2>
+<%= form_for User.new, url: new_member_order_path(@order.id) do |f| %>
+  <div class="field">
+    <%= f.label :email %><br>
+    <%= f.text_field :email %>
+  </div>
+  <div class="actions">
+  <%= f.submit  %>
+  </div>
+<% end %>
 
 
 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#invited">Invited</button>
@@ -147,6 +158,25 @@
 
   </div>
 </div>
+
+<fieldset class="col-sm-12" style="overflow-y: scroll; margin-top:10px;">
+  <legend>Invited Friends:</legend>
+  <% @orderuserjoin.each do |user| %>
+    <% if user.order_id == @order.id %>
+    <% @users.each do |username| %>
+    <% if username.id == user.user_id %>
+    <div class="col-sm-4">
+      <img class="col-sm-5" src="">
+      <div class="col-sm-6">
+        <span class="col-sm-12">
+          <%= username.name %></span>
+          <% end %>
+          <% end %>
+          <% end %>
+        </div>
+    </div>
+  <% end %>
+</fieldset>
 
 
 <%= link_to 'Back', orders_path %>
