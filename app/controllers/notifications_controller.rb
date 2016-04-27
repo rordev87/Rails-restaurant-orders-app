@@ -19,6 +19,12 @@ class NotificationsController < ApplicationController
     end
   end
 
+  def see_all_notification_of_me
+    Notification.where(:reciever_id => params[:id]).update_all( :is_seen => true  )
+    
+  end
+
+
   def show
     broadcast do
       @notification = Notification.find(params[:id])
