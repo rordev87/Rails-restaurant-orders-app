@@ -47,6 +47,7 @@ class OrdersController < ApplicationController
     @orderUser=OrderUserJoin.where(:order_id => params[:order_id]).where(:user_id => params[:user_id]).take
     @orderUser.update("is_joined" => 1)
     #create_notification( "<a rel='nofollow' data-method='put' href='/orders/#{params[:order_id]}/#{params[:user_id]}'>Join</a>" , reciever_id = @order.user_id ,sender_id = params[:user_id] )
+    create_notification("#{current_user.name} has joined your order",@order.user_id,current_user.id,@order.id)
     redirect_to @order
   end
 
