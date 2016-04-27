@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+
   # GET /orders
   # GET /orders.json
   def index
@@ -14,23 +15,23 @@ class OrdersController < ApplicationController
     @item=Item.new
     @invitedFriends=Array.new
     @joinedFriends=Array.new
-    OrderUserJoin.where(:order_id => params[:id]).each do |orderuser|
-      @user=User.find(orderuser.user_id)
+    OrderUserJoin.where(:order_id => params[:id]).each do |orderUser|
+      @user=User.find(orderUser.user_id)
       @invitedFriends.push(@user)
-      if(orderuser.is_joined == 1)
+      if(orderUser.is_joined == 1)
         @joinedFriends.push(@user)
       end
     end
+    @orderuserjoin = OrderUserJoin.all
   end
-
-
-
-   
-  
 
   # GET /orders/new
   def new
     @order = Order.new
+    @meal = @order.meal
+    @restaurant = @order.restaurant
+
+    # Git
     @users =User.all
     @groups =Group.all
 
@@ -42,7 +43,7 @@ class OrdersController < ApplicationController
 
 
   def joinOrder
-    @order=Order.find(params[:order_id])
+    @order=Order.where(id: params[:order_id]).take
     @orderUser=OrderUserJoin.where(:order_id => params[:order_id]).where(:user_id => params[:user_id]).take
     @orderUser.update("is_joined" => 1)
     #create_notification( "<a rel='nofollow' data-method='put' href='/orders/#{params[:order_id]}/#{params[:user_id]}'>Join</a>" , reciever_id = @order.user_id ,sender_id = params[:user_id] )
@@ -50,7 +51,7 @@ class OrdersController < ApplicationController
   end
 
   def removeUser
-    @order=Order.find(params[:order_id])
+    @order=Order.where(id: params[:order_id]).take
     OrderUserJoin.where(:order_id => params[:order_id]).where(:user_id => params[:user_id]).take.destroy
     
     redirect_to @order
@@ -59,7 +60,7 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    @order = Order.new(order_params)
+    @order = current_user.groups.build(order_params)
 
     respond_to do |format|
       if @order.save
@@ -100,7 +101,7 @@ class OrdersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
-#      @order = Order.find(params[:id])
+      @order = Order.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

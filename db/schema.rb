@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160427130854) do
+ActiveRecord::Schema.define(version: 20160427145600) do
 
   create_table "controllers", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
@@ -82,12 +82,16 @@ ActiveRecord::Schema.define(version: 20160427130854) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.string   "meal",       limit: 255
-    t.string   "restaurant", limit: 255
-    t.string   "status",     limit: 255
-    t.integer  "user_id",    limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "meal",               limit: 255
+    t.string   "restaurant",         limit: 255
+    t.string   "status",             limit: 255
+    t.integer  "user_id",            limit: 4
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "image_file_name",    limit: 255
+    t.string   "image_content_type", limit: 255
+    t.integer  "image_file_size",    limit: 4
+    t.datetime "image_updated_at"
   end
 
   create_table "orders_users", force: :cascade do |t|

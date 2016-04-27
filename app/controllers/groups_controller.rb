@@ -24,7 +24,7 @@ class GroupsController < ApplicationController
     # puts "***********************" + @email + "*****************************"
      @user = User.find_by_email(@email)
      @group = Group.find(params[:id])
-     
+
     
      if current_user.following?(@user)
        unless UserGroup.exists?(:user_id => @user.id)
@@ -90,7 +90,7 @@ class GroupsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_group
-      @group = Group.find(params[:id])
+      @group = Group.where(id: params[:id]).take
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
