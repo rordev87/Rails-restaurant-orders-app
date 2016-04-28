@@ -149,14 +149,14 @@
   </div>
 </div>
 
-<%= form_for User.new, url: orders_path(@order.id) do |t| %>
+<%= form_for User.new, url: @order.new_member do |t| %>
   
   <div class="field">
     <%= t.label :email %><br>
     <%= t.text_field :email %>
   </div>
   <div class="actions">
-  <%= t.submit  %>
+  <%= t.submit %>
   </div>
 <% end %>
 

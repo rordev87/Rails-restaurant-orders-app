@@ -27,14 +27,7 @@ class User < ActiveRecord::Base
 
         validates_uniqueness_of :name
 
-        validates_presence_of :name 
-        def self.search(search)
-         if search find(:first, condition: ['id = ?', "%#{search}%"])
-          search
-        else
-          self.first
-        end
-  end
+        
         
   def self.from_omniauth(auth)
       where(provider: auth.provider, uid: auth.uid).first_or_create do |user|

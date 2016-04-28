@@ -124,7 +124,8 @@ class OrdersController < ApplicationController
 
     @order = current_user.orders.build(order_params)
     @order.status = "Waiting"
-    @order.user_id = current_user.id
+    #@order.user_id = current_user.id
+    meal = @order.meal
     restaurant = @order.restaurant
     respond_to do |format|
       if @order.save
@@ -172,5 +173,4 @@ class OrdersController < ApplicationController
     def order_params
       params.require(:order).permit(:meal, :restaurant, :image )
     end
-
 end

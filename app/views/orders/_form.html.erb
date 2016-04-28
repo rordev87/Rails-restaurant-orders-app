@@ -19,33 +19,7 @@
     <%= f.label :From %><br>
     <%= f.text_field :restaurant %>
   </div>
-  
-  <!--<div class="field">
-    <%= f.label :Invite_Friend %><br>
-    <%= form_tag search_friends_path, remote: true, method: :get, id: 'friend-lookup-form' do %>
-      <div class="form-goup row no-padding text-center col-md-">
-        <div class="col-md-10">
-          <%= text_field_tag :search_param, params[:search_param],
-          placeholder: "Email", class: "form-control search-box input-lg" %>
-        </div>
-        <div class="col-md-2">
-          <%= button_tag(type: :submit, class: "btn btn-lg btn-success") do %>
-          <i class="fa fa-search"></i> Look up a friend
-          <% end %>
-        </div>
-      </div>
-      <% end %>
-  </div>-->
 
-  <%= simple_form_for @friend, url: {action: 'find_friend'},
-        html: { class: 'form-inline' },
-        method: 'get',
-        remote: true do |f| %>
-        <%= f.text_field :name, label: 'Invite a Friend',
-            place:holder: 'Invite a friend',
-            name: 'search' %>
-        <%= f.button :submit %>
-  <% end %>
 
   <div class="field">
     <%= f.label :Menu %><br>
