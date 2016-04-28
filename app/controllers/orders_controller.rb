@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :set_order, only: [:show, :update, :destroy]
   before_action :authenticate_user!
 
   # GET /orders
@@ -84,10 +84,6 @@ class OrdersController < ApplicationController
 
   end
 
-  # GET /orders/1/edit
-  def edit
-  end
-
 
   def joinOrder
     @order=Order.where(id: params[:order_id]).take
@@ -108,27 +104,11 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-#<<<<<<< HEAD
-#<<<<<<< HEAD
     @order = Order.new(order_params)
     @order.meal = params[:meal]
-#=======
-    #@order = current_user.orders.build(order_params)
-#    @order = Order.new(order_params)
-    #@order.meal = params[:meal]
-#>>>>>>> 23da6904a2a6d31996e99184a2c3301401efc63e
-    @order.status = "Waiting"
+    @order.status = "waiting"
     @order.user_id = current_user.id
     @restaurant = @order.restaurant
-
-
-#=======
-#    @order = Order.new(order_params)
-#    #puts params
-#    @order.meal = params[:meal]
-#    @order.status = "waiting"
-#    @order.user_id = current_user.id
-#>>>>>>> d922137f601ec6520049b8246b81626000fc5806
     respond_to do |format|
       if @order.save
         #@orderUser=OrderUserJoin.new
