@@ -35,11 +35,13 @@ class GroupsController < ApplicationController
           user_id: @user.id )
           @usergroup.save
        end 
+                redirect_to  group_path(@group.id)
+
        end
-       redirect_to groups_path
+       redirect_to  group_path(@group.id)
     # end
    else
-    format.html { redirect_to groups_path, notice: ' Add Frined to Group was successfully created.' }
+    format.html { redirect_to group_path(@group.id), notice: ' Add Frined to Group was successfully created.' }
     format.json { render :index, status: :created, location: @group }
     end
   end
