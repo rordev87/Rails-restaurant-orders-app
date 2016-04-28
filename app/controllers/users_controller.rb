@@ -18,12 +18,17 @@ class UsersController < ApplicationController
     # Rails.logg
 
     if @email!=""
+
     # puts "***********************" + @email + "*****************************"
      @user = User.find_by_email(@email)
+     if @user!= nil
       current_user.follow(@user)
-     redirect_to users_path
+      redirect_to users_path
+    else
+        redirect_to users_path
+   end 
    else
-    redirect_to users_path {"error "}
+     redirect_to users_path {"error "}
     end
 
 

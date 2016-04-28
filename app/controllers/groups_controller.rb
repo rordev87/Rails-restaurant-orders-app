@@ -23,23 +23,25 @@ class GroupsController < ApplicationController
   def new_member
     @email = params[:user][:email]
     if @email!=""
-    # puts "***********************" + @email + "*****************************"
+   # puts "***********************" + @email + "*****************************"
      @user = User.find_by_email(@email)
      @group = Group.find(params[:id])
+       # puts "***********************" + @group + "*****************************"
 
-    
      if current_user.following?(@user)
-       unless UserGroup.exists?(:user_id => @user.id) || UserGroup.exists?(:user_id => current_user.id)
+      unless UserGroup.exists?(:user_id => @user.id) && UserGroup.exists?(:group_id => @group.id) || current_user == @user.id
           @usergroup = UserGroup.new(
           group_id: @group.id,
           user_id: @user.id )
           @usergroup.save
-        end 
-      end
-       redirect_to groups_path
-      # end
+       end 
+                redirect_to  group_path(@group.id)
+
+       end
+       redirect_to  group_path(@group.id)
+    # end
    else
-    format.html { redirect_to groups_path, notice: ' Add Frined to Group was successfully created.' }
+    format.html { redirect_to group_path(@group.id), notice: ' Add Frined to Group was successfully created.' }
     format.json { render :index, status: :created, location: @group }
     end
   end
