@@ -1,17 +1,72 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <strong><%= @group.name %></strong>
-</p>
-<%= form_for User.new, url: new_member_group_path(@group.id) do |f| %>
+<div class="container"> 
+  <div class="row"></div>
+  <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+    <div class="panel panel-default">
+        <div class="panel-body">
+          <strong>Group name:</strong> 
+            <%= @group.name %>
+        </div>
+    </div>
 
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.text_field :email %>
-  <%= f.submit  :class => 'btn btn-primary' %>
   </div>
-<% end %>
+</div>
+
+<h1>Listing Groups</h1>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-6">
+        <div id="group-form" >
+        <%= form_for(@group) do |f| %>
+        <% if @group.errors.any? %>
+          <div id="error_explanation">
+            <ul>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="field">
+          <%= f.label :name %>
+          <%= f.text_field :name %>
+          <%= f.submit :class => 'btn btn-primary' %>
+        </div>
+      <% end %>
+      </div>
+     
+          <div class="row">
+            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+              <% @groups.each do |group| %>
+              <%= group.name %> <br><br>
+               <% end %>
+            </div>
+           
+          <div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
+              <% @groups.each do |group| %> 
+            <div class="btn-group">
+                  <%= link_to "Display", group,:class => "btn btn-primary", :method => :get %> 
+                  
+                  <%= link_to "Delete", group,:class => "btn btn-success", :method => :delete , data: { confirm: 'Are you sure?' } %> 
+                    <br><br>
+                  <% end %>
+            </div>
+          </div>
+            
+        </div>
+    </div>
+  
+
+    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+    <!-- <input type="text"></input>  -->
+    
+      <div> 
+      <%= form_for User.new, url: new_member_group_path(@group.id) do |f| %>
+        <div class="field">
+          <%= f.label :email %>
+          <%= f.text_field :email %>
+        <%= f.submit  :class => 'btn btn-primary' %>
+        </div>
+      <% end %>
 
 
 <fieldset class="col-sm-12" style="overflow-y: scroll; margin-top:10px;">
@@ -32,4 +87,19 @@
      <% end %>       
   <% end %>
 </fieldset>
+
+      </div>
+
+    </div>
+
+
+
+       
+  </div> 
+
+</div>
+
+
+
+
 

@@ -1,36 +1,50 @@
- 
- <%= form_for(@group) do |f| %>
+ <h1>Listing Groups</h1>
+<div class="container">
+ <div id="group-form" >
+            <%= form_for(@group) do |f| %>
+    <% if @group.errors.any? %>
+      <div id="error_explanation">
 
-  <div class="field">
-    <%= f.label :name %> 
-    <%= f.text_field :name %>
-  <%= f.submit :class => 'btn btn-primary' %>
+        <ul>
+    
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+      <%= f.submit :class => 'btn btn-primary' %>
+    </div>
+  <% end %>
   </div>
-<% end %>
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-6">
+     
+            <div class="row">
+            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+              <% @groups.each do |group| %>
+              <%= group.name %> <br><br>
+               <% end %>
+            </div>
+           
+          <div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
+              <% @groups.each do |group| %> 
+            <div class="btn-group">
+                  <%= link_to "Display", group,:class => "btn btn-primary", :method => :get %> 
+                  
+                  <%= link_to "Delete", group,:class => "btn btn-success", :method => :delete , data: { confirm: 'Are you sure?' } %> 
+                    <br><br>
+                  <% end %>
+            </div>
+          </div>
+            
+        </div>
+    </div>
+    
+       
+  </div> 
 
-<h1>Listing Groups</h1>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+</div>
 
-  <tbody>
-    <% @groups.each do |group| %>
-    <% if group.user_id == current_user.id %>
-      <tr>
-        <td><%= group.name %></td> 
-        <td><%= link_to 'Show', group, :class => 'btn btn-primary' %></td>
-        <td><%= link_to 'Destroy', group, :class => 'btn btn-primary', method: :delete, data: { confirm: 'Are you sure?' }  %></td>
-      </tr>
-    <% end %>
-    <% end %>
-
-  </tbody>
-</table>
-
-<%= link_to 'Back', groups_path %>
-<br>
 
