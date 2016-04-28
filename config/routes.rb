@@ -6,6 +6,9 @@ Rails.application.routes.draw do
 
 
   resources :orders do
+    member do
+      post :new_member
+    end
     resources :items
   end
   resources :groups do

@@ -25,11 +25,38 @@ class OrdersController < ApplicationController
     @orderuserjoin = OrderUserJoin.all
   end
 
+
+  def new_member
+    @email = params[:user][:email]
+    if @email!=""
+    # puts "***********************" + @email + "*****************************"
+     @user = User.find_by_email(@email)
+     @order = Order.find(params[:id])
+
+
+     # if current_user.following?(@user)
+        @orderuserjoin = OrderUserJoin.new(
+        order_id = @order.id,
+        user_id = @user.id )
+        @orderuserjoin.save
+
+        # UserGroup.new(user_id: @user.id , group_id:@group.id)
+        #  flash[:notice] = "Successfully created post."
+          redirect_to orders_path
+        #else
+        #  render action: 'index'
+        #end
+        #redirect_to groups_path
+      # end
+   else
+    redirect_to users_path {"error "}
+    end
+  end
   # GET /orders/new
   def new
-    @order = Order.new
-    @meal = @order.meal
-    @restaurant = @order.restaurant
+    @order = current_user.orders.build
+    #@meal = @order.meal
+    #@restaurant = @order.restaurant
 
     # Git
     @users =User.all
@@ -60,7 +87,11 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    @order = current_user.groups.build(order_params)
+    @order = current_user.orders.build(order_params)
+    @order.user_id = current_user.id
+    meal = @order.meal
+    #@restaurant = @order.restaurant
+
 
     respond_to do |format|
       if @order.save

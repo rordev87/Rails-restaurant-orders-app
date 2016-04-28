@@ -26,9 +26,9 @@ class GroupsController < ApplicationController
      @group = Group.find(params[:id])
 
      # if current_user.following?(@user)
-        @usergroup = UserGroup.new(
-        group_id = @group.id,
-        user_id = @user.id )
+        @usergroup = UserGroup.new
+        @usergroup.group_id = @group.id,
+        @usergroup.user_id = @user.id 
         @usergroup.save
 
         # UserGroup.new(user_id: @user.id , group_id:@group.id)
