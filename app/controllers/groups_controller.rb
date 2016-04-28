@@ -25,22 +25,20 @@ class GroupsController < ApplicationController
      @user = User.find_by_email(@email)
      @group = Group.find(params[:id])
 
-     # if current_user.following?(@user)
-        @usergroup = UserGroup.new
-        @usergroup.group_id = @group.id,
-        @usergroup.user_id = @user.id 
-        @usergroup.save
-
-        # UserGroup.new(user_id: @user.id , group_id:@group.id)
-        #  flash[:notice] = "Successfully created post."
-          redirect_to groups_path
-        #else
-        #  render action: 'index'
-        #end
-        #redirect_to groups_path
+    
+     if current_user.following?(@user)
+       unless UserGroup.exists?(:user_id => @user.id)
+          @usergroup = UserGroup.new(
+          group_id: @group.id,
+          user_id: @user.id )
+          @usergroup.save
+        end 
+      end
+       redirect_to groups_path
       # end
    else
-    redirect_to users_path {"error "}
+    format.html { redirect_to groups_path, notice: ' Add Frined to Group was successfully created.' }
+    format.json { render :index, status: :created, location: @group }
     end
   end
 
@@ -92,7 +90,7 @@ class GroupsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_group
-      @group = Group.find(params[:id])
+      @group = Group.where(id: params[:id]).take
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
