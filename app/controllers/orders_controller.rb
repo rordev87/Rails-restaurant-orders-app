@@ -82,6 +82,13 @@ class OrdersController < ApplicationController
     @order.user_id = current_user.id
     respond_to do |format|
       if @order.save
+        @orderUser=OrderUserJoin.new
+        @orderUser.order_id=@order.id
+        @orderUser.user_id=User.where(name: params["friend"]).take.id
+        @orderUser.is_joined=0
+        @orderUser.save
+        create_notification("#{current_user.name} has invited you to his order",@orderUser.user_id,current_user.id,@order.id)
+        puts "hellllllllllllllllllllllllllo"+@order.id.to_s+"and again"+User.where(name: params["friend"]).take.id.to_s
         format.html { redirect_to @order, notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
       else

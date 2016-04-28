@@ -22,9 +22,8 @@
     <%= f.text_field :restaurant %>
   </div>
   <div class="field">
-	  <%= f.label :friend %>
-    <%= f.text_field :friend %>
-	<input type="text" list="friends" />
+	  <%= label_tag(:friend, "Friend:") %>
+	<input type="text" list="friends" id="friend" name="friend" />
 
 	<datalist id="friends">
 		<% @users.each do |user| %>

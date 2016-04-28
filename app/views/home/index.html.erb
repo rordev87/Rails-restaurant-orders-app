@@ -47,7 +47,7 @@
 		  var text = "";
 		  for(var i = 0 ; i < result.length ; i++){
 
-   			text += "<li> <a href='/orders/"+result[i].meal+"'>"+result[i].meal + "</a> on " + result[i].created_at.replace(/T.*/i,"")+"</li>";
+   			text += "<li> <a href='/orders/"+result[i].id+"'>"+result[i].meal + "</a> on " + result[i].created_at.replace(/T.*/i,"")+"</li>";
         	
    		  }
    		  if(text == ""){
