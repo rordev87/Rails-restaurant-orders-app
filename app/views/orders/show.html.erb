@@ -36,7 +36,7 @@
 
 
 
-
+<% if @isJoined %>
 <%= form_for(@item, url: order_items_path(@order.id)) do |f| %>
 
   <div class="field">
@@ -58,6 +58,7 @@
   <div class="actions">
     <%= f.submit %>
   </div>
+<% end %>
 <% end %>
 
 

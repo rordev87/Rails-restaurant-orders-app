@@ -12,17 +12,31 @@ class OrdersController < ApplicationController
   # GET /orders/1.json
   def show
     @order=Order.where(id: params[:id]).take
-    @item=Item.new
-    @invitedFriends=Array.new
-    @joinedFriends=Array.new
-    OrderUserJoin.where(:order_id => params[:id]).each do |orderUser|
-      @user=User.find(orderUser.user_id)
-      @invitedFriends.push(@user)
-      if(orderUser.is_joined == 1)
-        @joinedFriends.push(@user)
+    if ( (isInvited @order.id, current_user.id) || @order.user_id == current_user.id)
+      @order=Order.where(id: params[:id]).take
+      @item=Item.new
+      @isJoined = (isJoined @order.id, current_user.id) || @order.user_id == current_user.id
+      @invitedFriends=Array.new
+      @joinedFriends=Array.new
+      OrderUserJoin.where(:order_id => params[:id]).each do |orderUser|
+        @user=User.find(orderUser.user_id)
+        @invitedFriends.push(@user)
+        if(orderUser.is_joined == 1)
+          @joinedFriends.push(@user)
+        end
       end
+      @orderuserjoin = OrderUserJoin.all
+    else
+      redirect_to  orders_path 
     end
-    @orderuserjoin = OrderUserJoin.all
+  end
+
+  def isInvited order_id, user_id
+    OrderUserJoin.where(:order_id => order_id).where(:user_id => user_id).take 
+  end
+
+  def isJoined order_id, user_id
+    OrderUserJoin.where(:order_id => order_id).where(:user_id => user_id).where(:is_joined => 1).take 
   end
 
   # GET /orders/new
