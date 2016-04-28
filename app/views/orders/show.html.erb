@@ -149,12 +149,7 @@
   </div>
 </div>
 
-
-
-<%= link_to 'Back', orders_path %>
-
-
-<%= form_for User.new, url: new_member_order_path(@order.id) do |t| %>
+<%= form_for User.new, url: orders_path(@order.id) do |t| %>
   
   <div class="field">
     <%= t.label :email %><br>
@@ -183,3 +178,9 @@
     </div>
   <% end %>
 </fieldset>
+
+
+
+<%= link_to 'Back', orders_path %>
+
+
