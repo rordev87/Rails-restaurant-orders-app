@@ -109,7 +109,7 @@ class OrdersController < ApplicationController
   # POST /orders.json
   def create
 #<<<<<<< HEAD
-    @order = current_user.orders.build(order_params)
+    @order = Order.new(order_params)
     @order.meal = params[:meal]
     @order.status = "Waiting"
     @order.user_id = current_user.id
