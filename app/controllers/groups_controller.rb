@@ -12,6 +12,8 @@ class GroupsController < ApplicationController
   # GET /groups/1
   # GET /groups/1.json
   def show
+     @groups = Group.all
+     @groupm = current_user.groups.build
     @usergroup=UserGroup.all
     @users=User.all
 
@@ -27,7 +29,7 @@ class GroupsController < ApplicationController
 
     
      if current_user.following?(@user)
-       unless UserGroup.exists?(:user_id => @user.id)
+       unless UserGroup.exists?(:user_id => @user.id) || UserGroup.exists?(:user_id => current_user.id)
           @usergroup = UserGroup.new(
           group_id: @group.id,
           user_id: @user.id )
