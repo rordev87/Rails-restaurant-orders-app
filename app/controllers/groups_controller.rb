@@ -78,6 +78,7 @@ end
   def create
     @group = current_user.groups.build(group_params)
     @group.user_id = current_user.id
+    
 
     respond_to do |format|
       if @group.save

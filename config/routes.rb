@@ -5,11 +5,20 @@ Rails.application.routes.draw do
 
 
 
+#<<<<<<< HEAD
   resources :orders, except: :edit do
+    member do
+      post :new_member
+    end
+    #resources :items
     resources :items, only: [:create, :destroy]
+#=======
+  #resources :orders, except: :edit do
+  #  resources :items, only: [:create, :destroy]
+#>>>>>>> d922137f601ec6520049b8246b81626000fc5806
   end
   resources :groups do
- member do
+    member do
       post :new_member
       delete :delete_member
      # post '/newfollow', to: 'users#newfollow'

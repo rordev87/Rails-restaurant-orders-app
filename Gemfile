@@ -68,5 +68,7 @@ group :development do
   gem 'spring'
 
   gem 'paperclip', '~> 4.3', '>= 4.3.6'
+
+
 end
 
