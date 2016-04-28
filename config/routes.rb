@@ -18,7 +18,7 @@ Rails.application.routes.draw do
 #>>>>>>> d922137f601ec6520049b8246b81626000fc5806
   end
   resources :groups do
- member do
+    member do
       post :new_member
      
      # post '/newfollow', to: 'users#newfollow'

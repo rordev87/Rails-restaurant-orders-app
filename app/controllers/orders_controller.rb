@@ -26,8 +26,9 @@ class OrdersController < ApplicationController
         end
       end
       @orderuserjoin = OrderUserJoin.all
+      @users = User.all
     else
-      redirect_to  orders_path 
+      redirect_to orders_path 
     end
   end
 
@@ -49,14 +50,19 @@ class OrdersController < ApplicationController
 
 
      # if current_user.following?(@user)
-        @orderuserjoin = OrderUserJoin.new(
-        order_id = @order.id,
-        user_id = @user.id )
-        @orderuserjoin.save
+        if current_user.following?(@user)
+      unless OrderUserJoin.exists?(:user_id => @user.id) && OrderUserJoin.exists?(:order_id => @order.id) || current_user == @user.id
+          @orderuserjoin = OrderUserJoin.new(
+          order_id: @order.id,
+          user_id: @user.id )
+          @orderuserjoin.save
+       end 
+     end
+                redirect_to order_path(@order.id)
 
         # UserGroup.new(user_id: @user.id , group_id:@group.id)
         #  flash[:notice] = "Successfully created post."
-          redirect_to orders_path
+          #redirect_to orders_path
         #else
         #  render action: 'index'
         #end
@@ -107,7 +113,7 @@ class OrdersController < ApplicationController
     @order.meal = params[:meal]
     @order.status = "Waiting"
     @order.user_id = current_user.id
-    #@restaurant = @order.restaurant
+    @restaurant = @order.restaurant
 
 
 #=======
@@ -161,6 +167,6 @@ class OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:meal, :restaurant )
+      params.require(:order).permit(:meal, :restaurant, :image )
     end
 end
