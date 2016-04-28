@@ -2,17 +2,14 @@
 
 <p>
   <strong>Name:</strong>
-  <%= @group.name %>
+  <strong><%= @group.name %></strong>
 </p>
 <%= form_for User.new, url: new_member_group_path(@group.id) do |f| %>
-  
 
   <div class="field">
-    <%= f.label :email %><br>
+    <%= f.label :email %>
     <%= f.text_field :email %>
-  </div>
-  <div class="actions">
-  <%= f.submit  %>
+  <%= f.submit  :class => 'btn btn-primary' %>
   </div>
 <% end %>
 
@@ -28,11 +25,11 @@
       <div class="col-sm-6">
         <span class="col-sm-12">
           <%= username.name %></span>
-          <% end %>
-          <% end %>
-          <% end %>
         </div>
     </div>
+   <% end %>
+    <% end %>
+     <% end %>       
   <% end %>
 </fieldset>
 

@@ -5,8 +5,8 @@ Rails.application.routes.draw do
 
 
 
-  resources :orders do
-    resources :items
+  resources :orders, except: :edit do
+    resources :items, only: [:create, :destroy]
   end
   resources :groups do
  member do
@@ -50,7 +50,7 @@ match 'users/newfollow' => 'users#newfollow', :via => :post
     end
  end
 
-  root  'pages#index'
+  root  'home#index' 
 
   
   # Example of regular route:

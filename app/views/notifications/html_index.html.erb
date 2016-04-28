@@ -1,6 +1,6 @@
 <ul>
 <% @notifications.each do |notification| %>
-<li><%= notification.message %></li>
+<li><a href="/orders/<%= notification.order_id %>" > <%= notification.message %></a></li>
 
 
 <% end %>

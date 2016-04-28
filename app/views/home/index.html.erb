@@ -80,7 +80,7 @@
 			var order = result[i].order
 			var name = result[i].admin.name
 
-   			text += "<li><a href=/users/'"+result[i].admin.id+"'>"+name + "</a> has created an order from <a href='/orders/"+order.id+"'>" + order.restaurant+"</a></li>";
+   			text += "<li>"+name + "</a> has created an <a href='/orders/"+order.id+"'>order</a> from " + order.restaurant+"</li>";
 ;
         	
    		  }

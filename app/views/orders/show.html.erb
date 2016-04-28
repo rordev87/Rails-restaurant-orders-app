@@ -10,6 +10,7 @@
   <%= @order.restaurant %>
 </p>
 
+
 <p>
   <strong>Status:</strong>
   <%= @order.status %>
@@ -32,56 +33,10 @@
 	</tbody>
 </table>
 
-<h2>Invited</h2>
-<table>
-	<thead>
-	    <tr>
-	    	<th>User</th>
-	      	<th>email</th>
-	      	<th>Delete</th>
-          <th>Join</th>
-	    </tr>
-	</thead>
-	<tbody>
-		<% @invitedFriends.each do |friend| %>
-      		<tr>
-        		<td><%= friend.name %></td>
-        		<td><%= friend.email %></td>
-        		<td><%= if current_user.id == @order.user_id
-                      link_to 'Destroy',  removeUserfromorder_path(@order.id, friend.id), method: :delete, data: { confirm: 'Are you sure?' }
-                    end %></td>
-            <td><%= if current_user.id == @order.user_id || current_user.id == friend.id
-                      link_to 'Join',  joinuserinorder_path(@order.id, friend.id), method: :put 
-                    end %></td>
-      		</tr>
-    	<% end %>
-	</tbody>
-	
-</table>
 
-<h2>Joined</h2>
-<table>
-	<thead>
-	    <tr>
-	    	<th>User</th>
-	      	<th>email</th>
-	      	<th>Delete</th>
-	    </tr>
-	</thead>
-	<tbody>
-		<% @joinedFriends.each do |friend| %>
-      		<tr>
-        		<td><%= friend.name %></td>
-        		<td><%= friend.email %></td>
-        		<td><%=  if current_user.id == @order.user_id
-                       link_to 'Destroy',  removeUserfromorder_path(@order.id, friend.id), method: :delete, data: { confirm: 'Are you sure?' } 
-                       end %></td>
-      		</tr>
-    	<% end %>
-	</tbody>
-	
-</table>
 
+
+<% if @isJoined %>
 <%= form_for(@item, url: order_items_path(@order.id)) do |f| %>
 
   <div class="field">
@@ -104,11 +59,96 @@
     <%= f.submit %>
   </div>
 <% end %>
+<% end %>
+
+
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#invited">Invited</button>
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#joined">Joined</button>
+
+<div id="invited" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Invited</h4>
+      </div>
+      <div class="modal-body">
+        <table>
+          <thead>
+              <tr>
+                <th>User</th>
+                  <th>email</th>
+                  <th>Delete</th>
+                  <th>Join</th>
+              </tr>
+          </thead>
+          <tbody>
+            <% @invitedFriends.each do |friend| %>
+                  <tr>
+                    <td><%= friend.name %></td>
+                    <td><%= friend.email %></td>
+                    <td><%= if current_user.id == @order.user_id
+                              link_to 'Destroy',  removeUserfromorder_path(@order.id, friend.id), method: :delete, data: { confirm: 'Are you sure?' }
+                            end %></td>
+                    <td><%= if current_user.id == friend.id
+                              link_to 'Join',  joinuserinorder_path(@order.id, friend.id), method: :put 
+                            end %></td>
+                  </tr>
+              <% end %>
+          </tbody>
+          
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="joined" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Joined</h4>
+      </div>
+      <div class="modal-body">
+        <table>
+          <thead>
+              <tr>
+                <th>User</th>
+                  <th>email</th>
+                  <th>Delete</th>
+              </tr>
+          </thead>
+          <tbody>
+            <% @joinedFriends.each do |friend| %>
+                  <tr>
+                    <td><%= friend.name %></td>
+                    <td><%= friend.email %></td>
+                    <td><%=  if current_user.id == @order.user_id
+                               link_to 'Destroy',  removeUserfromorder_path(@order.id, friend.id), method: :delete, data: { confirm: 'Are you sure?' } 
+                               end %></td>
+                  </tr>
+              <% end %>
+          </tbody>
+          
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 
 
-
-
-
-<%= link_to 'Edit', edit_order_path(@order) %> |
 <%= link_to 'Back', orders_path %>

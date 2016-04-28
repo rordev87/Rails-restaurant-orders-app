@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+
   # GET /orders
   # GET /orders.json
   def index
@@ -11,26 +12,40 @@ class OrdersController < ApplicationController
   # GET /orders/1.json
   def show
     @order=Order.where(id: params[:id]).take
-    @item=Item.new
-    @invitedFriends=Array.new
-    @joinedFriends=Array.new
-    OrderUserJoin.where(:order_id => params[:id]).each do |orderuser|
-      @user=User.find(orderuser.user_id)
-      @invitedFriends.push(@user)
-      if(orderuser.is_joined == 1)
-        @joinedFriends.push(@user)
+    if ( (isInvited @order.id, current_user.id) || @order.user_id == current_user.id)
+      @order=Order.where(id: params[:id]).take
+      @item=Item.new
+      @isJoined = (isJoined @order.id, current_user.id) || @order.user_id == current_user.id
+      @invitedFriends=Array.new
+      @joinedFriends=Array.new
+      OrderUserJoin.where(:order_id => params[:id]).each do |orderUser|
+        @user=User.find(orderUser.user_id)
+        @invitedFriends.push(@user)
+        if(orderUser.is_joined == 1)
+          @joinedFriends.push(@user)
+        end
       end
+      @orderuserjoin = OrderUserJoin.all
+    else
+      redirect_to  orders_path 
     end
   end
 
+  def isInvited order_id, user_id
+    OrderUserJoin.where(:order_id => order_id).where(:user_id => user_id).take 
+  end
 
-
-   
-  
+  def isJoined order_id, user_id
+    OrderUserJoin.where(:order_id => order_id).where(:user_id => user_id).where(:is_joined => 1).take 
+  end
 
   # GET /orders/new
   def new
     @order = Order.new
+    @meal = @order.meal
+    @restaurant = @order.restaurant
+
+    # Git
     @users =User.all
     @groups =Group.all
 
@@ -42,15 +57,16 @@ class OrdersController < ApplicationController
 
 
   def joinOrder
-    @order=Order.find(params[:order_id])
+    @order=Order.where(id: params[:order_id]).take
     @orderUser=OrderUserJoin.where(:order_id => params[:order_id]).where(:user_id => params[:user_id]).take
     @orderUser.update("is_joined" => 1)
     #create_notification( "<a rel='nofollow' data-method='put' href='/orders/#{params[:order_id]}/#{params[:user_id]}'>Join</a>" , reciever_id = @order.user_id ,sender_id = params[:user_id] )
+    create_notification("#{current_user.name} has joined your order",@order.user_id,current_user.id,@order.id)
     redirect_to @order
   end
 
   def removeUser
-    @order=Order.find(params[:order_id])
+    @order=Order.where(id: params[:order_id]).take
     OrderUserJoin.where(:order_id => params[:order_id]).where(:user_id => params[:user_id]).take.destroy
     
     redirect_to @order
@@ -60,7 +76,10 @@ class OrdersController < ApplicationController
   # POST /orders.json
   def create
     @order = Order.new(order_params)
-
+    #puts params
+    @order.meal = params[:meal]
+    @order.status = "waiting"
+    @order.user_id = current_user.id
     respond_to do |format|
       if @order.save
         format.html { redirect_to @order, notice: 'Order was successfully created.' }
@@ -100,11 +119,11 @@ class OrdersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
-#      @order = Order.find(params[:id])
+      @order = Order.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:meal, :restaurant, :status, :user_id)
+      params.require(:order).permit(:meal, :restaurant )
     end
 end
