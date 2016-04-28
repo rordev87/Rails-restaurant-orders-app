@@ -22,32 +22,55 @@ class GroupsController < ApplicationController
   # GET /groups/new
   def new_member
     @email = params[:user][:email]
-    if @email!=""
+    @group = Group.find(params[:id])
+    if @email !=""
    # puts "***********************" + @email + "*****************************"
      @user = User.find_by_email(@email)
-     @group = Group.find(params[:id])
        # puts "***********************" + @group + "*****************************"
-
-     if current_user.following?(@user)
-      unless UserGroup.exists?(:user_id => @user.id) && UserGroup.exists?(:group_id => @group.id) || current_user == @user.id
-          @usergroup = UserGroup.new(
-          group_id: @group.id,
-          user_id: @user.id )
-          @usergroup.save
-       end 
+      if @user != nil
+       if current_user != @user.id
+         if current_user.following?(@user)
+            @userfound = UserGroup.where(:user_id => @user.id , :group_id => @group.id )
+            if @userfound.exists? == false 
+                @usergroup = UserGroup.new(
+                group_id: @group.id,
+                user_id: @user.id )
+                @usergroup.save
+                #  ' Add Frined to Group was successfully created.' 
+                 
                 redirect_to  group_path(@group.id)
-
+            else 
+                  puts '*********************** Frined aready founded .' 
+                  redirect_to  group_path(@group.id)
+            end 
+         else 
+           puts '******************* a user not a friend.' 
+            redirect_to  group_path(@group.id)
+         end
+       else 
+         puts '******************* trying to add himself to group .' 
+          redirect_to  group_path(@group.id)
        end
-       redirect_to  group_path(@group.id)
-    # end
+     else
+      puts '******************* not user'
+      redirect_to  group_path(@group.id)    
+     end
    else
-    format.html { redirect_to group_path(@group.id), notice: ' Add Frined to Group was successfully created.' }
-    format.json { render :index, status: :created, location: @group }
-    end
-  end
+    puts '*******************  email is empty.' 
+    redirect_to group_path(@group.id)
+ end 
+
+end
 
   # GET /groups/1/edit
-  def edit
+  def delete_member
+    @usergroup = UserGroup.find(params[:id])
+    @usergroup.destroy
+    respond_to do |format|
+      format.html { redirect_to groups_url, notice: 'Group member was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+
   end
 
   # POST /groups
@@ -95,6 +118,7 @@ class GroupsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_group
       @group = Group.where(id: params[:id]).take
+      
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

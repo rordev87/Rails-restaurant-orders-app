@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :groups do
  member do
       post :new_member
-     
+      delete :delete_member
      # post '/newfollow', to: 'users#newfollow'
     end
  end

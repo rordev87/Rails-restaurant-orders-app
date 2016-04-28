@@ -1,3 +1,4 @@
+<p id="notice"><%= notice %></p>
 
 <div class="container"> 
   <div class="row"></div>
@@ -36,17 +37,21 @@
      
             <div class="col-md-2 col-lg-2 col-sm-4 col-xs-2">
               <% @groups.each do |group| %>
+              <% if group.user_id == current_user.id %>
               <%= group.name %> <br><br>
+               <% end %>
                <% end %>
             </div>
            
           <div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
               <% @groups.each do |group| %> 
+              <% if group.user_id == current_user.id %>
             <div class="btn-group">
                   <%= link_to "Display", group,:class => "btn btn-primary", :method => :get %> 
                   
                   <%= link_to "Delete", group,:class => "btn btn-success", :method => :delete , data: { confirm: 'Are you sure?' } %> 
                     <br><br>
+                  <% end %>
                   <% end %>
             </div>
           </div>
@@ -79,6 +84,9 @@
       <div class="col-sm-6">
         <span class="col-sm-12">
           <%= username.name %></span>
+          <span class="col-sm-12" >
+                <%= link_to "Delete", delete_member_group_path(user.id),:class => "btn btn-success", :method => :delete , data: { confirm: 'Are you sure?' } %> 
+            </span>
         </div>
     </div>
    <% end %>
