@@ -57,7 +57,7 @@
 
       <script type="text/javascript">
 
-        
+        var firstTime = true        
 
         var myId = "<%= current_user.id %>"
 
@@ -149,6 +149,13 @@
           if($("#notifications").hasClass("open")){
                numberOfUnSeen = 0;              
 
+          }
+          if(numberOfUnSeen > 0 && !firstTime  ){
+            new Audio('/Bell-ding.mp3').play();
+
+          }
+          if(firstTime){
+            firstTime = false;
           }
           noteWrapper.setNotificationScene(numberOfUnSeen)
           //$("#UnSeenNotifications").html(numberOfUnSeen)
