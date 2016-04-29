@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy]
-
+  respond_to :html, :json
+  
   # GET /groups
   # GET /groups.json
   def index
@@ -17,6 +18,14 @@ class GroupsController < ApplicationController
     @usergroup=UserGroup.all
     @users=User.all
 
+  end
+
+
+  def show_users
+    #todo make it for for the group only
+    
+    @usersIds= UserGroup.where(group_id: params[:id]).map { |e| e.user_id }
+    respond_with User.where(id: @usersIds)
   end
 
   # GET /groups/new

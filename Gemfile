@@ -48,6 +48,7 @@ gem 'omniauth-oauth2'
 gem 'puma', '~> 3.4'
 
 gem 'will_paginate', '~> 3.1'
+gem 'jquery-ui-rails', '~> 5.0', '>= 5.0.5'
 
 # Use Unicorn as the app server
 # gem 'unicorn'

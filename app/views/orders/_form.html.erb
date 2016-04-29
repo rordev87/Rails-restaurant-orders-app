@@ -12,27 +12,289 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :Order_for %><br>
-    <%= f.text_field :meal %>
+    <%= label_tag :Order_for %><br>
+    <%= text_field_tag :meal %>
   </div>
   <div class="field">
     <%= f.label :From %><br>
     <%= f.text_field :restaurant %>
   </div>
- <!-- <div class="field">
-    <%= f.label :status %><br>
-    <%= f.text_field :status %>
-  </div> -->
 
 
   <div class="field">
     <%= f.label :Menu %><br>
     <%= f.file_field :image %>
   </div>
+  <div class="field">
+    <input name="firendsToBeAdded" id="firendsToBeAdded" class="hiddenfriends" type="text" value="">
+  </div>
 
+  
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+
+
+
+<% if @friends and @friends.length > 0 %>
+  <select id="friendsOption">
+    <% @friends.each do |friend| %>
+      <option value="<%= friend.id %>"><%= friend.name %></option>
+    <% end %>
+
+  </select>
+  <button id="addFriend">add</button>
+
+<% end %>
+<% if @groups and @groups.length > 0 %>
+  <select id ="groupOption">
+    <% @groups.each do |group| %>
+      <option value="<%= group.id %>"><%= group.name %></option> 
+    <% end %>
+
+  </select>
+  <button id="addGroup">add</button>
+<% end %>
+
+<div id="friends">
+  
+</div>
+<div id="groups">
+  
+</div>
+
+
+
+<script>
+
+
+
+  var GroupsAndFriendsRenderer = function(){
+
+
+    this.onClicking = function(button){
+
+    }
+    var that = this;
+    $( "#friends" ).on( "click", "button", function() {
+      //alert("hi");
+      that.onClicking(this);
+      //$(this).parent().remove()
+
+    });
+
+    this.renderFriends = function(ids,names){
+      var text = "";
+      for(var i = 0 ; i < ids.length ; i++){
+
+        text += "<div name='friend"+ids[i]+"'>"+names[ids[i]]+"<button name='"+ids[i]+"'>remove</button></div>"
+      }
+      $("#friends").html(text);   
+    }
+  }
+
+  var AddedGroupsAndFriendsList = function(){
+    this.originalFriendsIds = <%= @friends_id.to_s %>;
+    for(var i = 0 ; i <this.originalFriendsIds.length ; i++){
+      this.originalFriendsIds[i] += "";
+    }
+    //console.log( <%= @friends_id.to_s %> )
+    this.friendIds =[];
+    this.groupIds = [];
+
+    this.friendsNames = {};
+    this.groupNames = {};
+    
+    this.addFriend = function(name,id){
+      if(this.friendIds.indexOf(id+"") == -1){
+        this.friendIds.push(id+"")
+        this.friendsNames[id] = name; 
+        this.pushInFriend()
+        $("friend"+id).parent().remove()    
+      }
+        $("#firendsToBeAdded").val(this.friendIds+"")
+
+      console.log(this.friendIds)
+    }
+
+    this.pushOutFriend = function (name,id) {
+      
+    }
+
+
+    this.pushInFriend = function () {
+      
+    }
+
+    this.removeFriend = function(id){
+
+      var index = this.friendIds.indexOf(id+"");
+      if(index != -1){
+        this.friendIds.splice(index,1)
+        this.pushOutFriend(this.friendsNames[id],id,"")   
+        $("div[name='friend"+id+"']").remove()
+      }
+  //    console.log(this.friendIds)
+      $("#firendsToBeAdded").val(this.friendIds+"")   
+
+    }
+
+
+  }
+
+
+  var DropDownRenderer = function(){
+
+    this.getSelectedOption = function(){
+      var id = $('#friendsOption :selected').val();
+      var name = $('#friendsOption :selected').text();
+      return ({"id":id, "name":name});
+
+    }
+    
+    this.addOption = function(name,id){
+      $('#friendsOption').append("<option value='"+id+"'>"+name+"</option>");
+      
+    }
+
+
+
+  }
+
+
+  var GroupList = function(friendsListKeeper){
+
+
+    this.groupIds = [];
+    this.groupNames = {};
+    this.groupMembers = {};
+    this.friendsListKeeper = friendsListKeeper;
+    var that = this;
+    
+    this.onClicking = function(button) {
+
+    }
+
+    this.removeGroup = function(group){
+      
+      $('#groupOption').append("<option value='"+group+"'>"+this.groupNames[group+""]+"</option>");
+
+      var myGroup = this.groupMembers[group];
+      console.log(myGroup)
+      for(var i = 0 ; i < myGroup.length ; i++){
+        this.friendsListKeeper.removeFriend(myGroup[i].id+"");
+
+      }
+    }
+    
+    this.addGroup = function(group , groupName , groupId){
+      
+      $("#groups").append("<div name='group"+groupId+"'>"+groupName+"<button name='"+groupId+"'>remove</button></div>")
+
+      for(var i = 0 ; i < group.length ; i++){
+        that.friendsListKeeper.addFriend(group[i].name,group[i].id+"");
+        
+
+      }
+    }
+    $( "#groups" ).on( "click", "button", function() {
+      //alert("hi");
+      that.onClicking(this);
+      $(this).parent().remove()
+
+    });
+
+
+    this.getGroupFriendsList = function( groupName , groupId){
+      this.groupNames[groupId+""] = groupName;
+      var ans = false;
+      if(this.groupMembers[groupId] != undefined){
+        this.addGroup(this.groupMembers[groupId] , groupName , groupId);
+      }
+
+      else{
+        $.ajax({url:"/groups/"+groupId+"/show_users.json",success:function(result){
+          var minAns = [];
+          for (var i = 0 ; i < result.length ; i++){
+            minAns.push({"name":result[i].name,"id":result[i].id})
+          }
+          
+          //console.log(minAns)
+          that.groupMembers[groupId] = minAns;
+          that.addGroup(that.groupMembers[groupId] , groupName , groupId);
+        }});
+        
+      }
+
+    }
+  }
+
+
+
+
+
+  
+   
+var main = function(){
+  
+  var myGroupsAndFriendRenderer = new GroupsAndFriendsRenderer();
+  var myGroupsAndFriends = new AddedGroupsAndFriendsList();
+  var myDropDownRenderer = new DropDownRenderer();
+  
+
+  myGroupsAndFriends.pushOutFriend = function(name,id){
+    
+    console.log( $('#friendsOption').html().indexOf('value="'+id+'"') )
+    console.log ( myGroupsAndFriends.originalFriendsIds.indexOf(id) )
+    if($('#friendsOption').html().indexOf('value="'+id+'"') == -1 && myGroupsAndFriends.originalFriendsIds.indexOf(id) > -1 ){    
+      myDropDownRenderer.addOption(name,id);
+    }
+  }
+  myGroupsAndFriends.pushInFriend = function () {
+    myGroupsAndFriendRenderer.renderFriends(myGroupsAndFriends.friendIds , myGroupsAndFriends.friendsNames);
+
+  }
+
+
+
+  
+  myGroupsAndFriendRenderer.onClicking = function(clicker){
+    var id = $(clicker).attr('name');
+    myGroupsAndFriends.removeFriend(id);
+
+  }
+    
+  $("#addFriend").click(function(){
+    var id = $('#friendsOption :selected').val();
+    var name = $('#friendsOption :selected').text();
+    $('#friendsOption :selected').remove();
+    myGroupsAndFriends.addFriend(name,id+"");
+
+    //console.log(myGroupsAndFriends)
+
+
+  })
+  $("#addGroup").click(function(){
+      var id = $('#groupOption :selected').val();
+      var name = $('#groupOption :selected').text();
+      $('#groupOption :selected').remove();
+      myGroupList.getGroupFriendsList(name,id+"");;
+    });
+
+  var myGroupList = new GroupList(myGroupsAndFriends);
+  myGroupList.onClicking = function (clicker) {
+    var id = $(clicker).attr('name');
+    myGroupList.removeGroup(id);
+
+  }
+  //myGroupList.getGroupFriendsList(1);
+  //myGroupList.removeGroup(1);
+
+}
+
+main();
+</script>
+
 
 

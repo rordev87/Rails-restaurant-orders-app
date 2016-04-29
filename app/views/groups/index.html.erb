@@ -1,23 +1,23 @@
  <h1>Listing Groups</h1>
 <div class="container">
  <div id="group-form" >
-            <%= form_for(@group) do |f| %>
-    <% if @group.errors.any? %>
-      <div id="error_explanation">
+    <%= form_for(@group) do |f| %>
+      <% if @group.errors.any? %>
+        <div id="error_explanation">
 
-        <ul>
-    
-        </ul>
+          <ul>
+      
+          </ul>
+        </div>
+      <% end %>
+      <div class="field">
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+        <%= f.submit :class => 'btn btn-primary' %>
       </div>
     <% end %>
-
-    <div class="field">
-      <%= f.label :name %>
-      <%= f.text_field :name %>
-      <%= f.submit :class => 'btn btn-primary' %>
-    </div>
-  <% end %>
   </div>
+  <br /><br /><br />
   <div class="row">
     <div class="col-md-6 col-sm-6 col-xs-6">
      

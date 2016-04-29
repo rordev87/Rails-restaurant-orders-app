@@ -44,7 +44,7 @@ Rails.application.routes.draw do
   
   get 'allNotifications/:id', to: 'notifications#html_index'
   get 'notifications/:id/clear' , to: 'notifications#see_all_notification_of_me'
-
+  get 'groups/:id/show_users(.:format)', to: "groups#show_users"
   
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
