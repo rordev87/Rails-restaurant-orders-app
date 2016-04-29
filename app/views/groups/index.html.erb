@@ -1,54 +1,60 @@
- <h1>Listing Groups</h1>
-<div class="container">
- <div id="group-form" >
-    <%= form_for(@group) do |f| %>
-      <% if @group.errors.any? %>
-        <div id="error_explanation">
-
-          <ul>
-      
-          </ul>
-        </div>
-      <% end %>
-      <div class="field">
-        <%= f.label :name %>
-        <%= f.text_field :name %>
-        <%= f.submit :class => 'btn btn-primary' %>
-      </div>
-    <% end %>
-  </div>
-  <br /><br /><br />
-  <div class="row">
-    <div class="col-md-6 col-sm-6 col-xs-6">
-     
-            <div class="row">
-            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
-              <% @groups.each do |group| %>
-              <% if group.user_id == current_user.id %>
-              <%= group.name %> <br><br>
-               <% end %>
-               <%end%>
-            </div>
-           
-          <div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
-              <% @groups.each do |group| %> 
-              <% if group.user_id == current_user.id %>
-            <div class="btn-group">
-                  <%= link_to "Display", group,:class => "btn btn-primary", :method => :get %> 
-                  
-                  <%= link_to "Delete", group,:class => "btn btn-success", :method => :delete , data: { confirm: 'Are you sure?' } %> 
-                    <br><br>
-                  <% end %>
-                  <% end %>
-            </div>
-          </div>
-            
-        </div>
-    </div>
-    
-       
-  </div> 
-
+ <h1></h1>
+ <div class="container">
+  <div class="page-header">
+  <h1>Listing Groups</h1>
 </div>
-
-
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div id="group-form" >
+        <%= form_for(@group) do |f| %>
+          <% if @group.errors.any? %>
+            <div id="error_explanation">
+              <ul>
+              </ul>
+            </div>
+          <% end %>
+          <div class="form-group">
+            <h5><%= f.label :name %></h5>
+            <%= f.text_field :name, class: "form-control", placeholder: "Group Name" %>
+          </div>
+          <%= f.submit "Create Group", class: 'btn btn-default' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div> 
+<br/>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-4">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <table class="table">
+ <caption><h2>My Groups</h2></caption>
+   <tbody>
+     <% @groups.each do |group| %>
+              <% if group.user_id == current_user.id %>
+              <tr>
+                <td><%= group.name %></td>
+                <td>
+                  <%= link_to "Display", group,:class => "btn btn-default", :method => :get %> 
+                </td>
+                <td>
+                  <%= link_to "Delete", group,:class => "btn btn-danger", :method => :delete , data: { confirm: 'Are you sure?' } %> 
+                </td>
+              </tr>
+              <% end %>
+     <%end%>
+   </tbody>
+ </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-8">
+        
+      </div>
+  </div>
+ </div>
+</div>

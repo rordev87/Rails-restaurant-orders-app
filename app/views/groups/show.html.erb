@@ -1,99 +1,108 @@
 <p id="notice"><%= notice %></p>
-
-<h1>Listing Groups</h1>
-
 <div class="container">
-  <div class="row">
-    <div class="col-md-6 col-sm-6 col-xs-6">
-        <div id="group-form" >
-        <%= form_for Group.new  do |f| %>
-        <% if @group.errors.any? %>
-          <div id="error_explanation">
-            <ul>
-            </ul>
-          </div>
-        <% end %>
-
-        <div class="field">
-          <%= f.label :name %>
-          <%= f.text_field :name %>
-          <%= f.submit :class => 'btn btn-primary' %>
-        </div>
-      <% end %>
-      </div>
-     
-            <div class="col-md-2 col-lg-2 col-sm-4 col-xs-2">
-              <% @groups.each do |group| %>
-              <% if group.user_id == current_user.id %>
-              <%= group.name %> <br><br>
-               <% end %>
-               <% end %>
-            </div>
-           
-          <div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
-              <% @groups.each do |group| %> 
-              <% if group.user_id == current_user.id %>
-            <div class="btn-group">
-                  <%= link_to "Display", group,:class => "btn btn-primary", :method => :get %> 
-                  
-                  <%= link_to "Delete", group,:class => "btn btn-success", :method => :delete , data: { confirm: 'Are you sure?' } %> 
-                    <br><br>
-                  <% end %>
-                  <% end %>
-            </div>
-          </div>
-            
-        </div>
- 
-  
-
-    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
-    <!-- <input type="text"></input>  -->
-    
-      <div> 
-      <%= form_for User.new, url: new_member_group_path(@group.id) do |f| %>
-        <div class="field">
-          <%= f.label :email %>
-          <%= f.text_field :email %>
-        <%= f.submit  :class => 'btn btn-primary' %>
-        </div>
-      <% end %>
-
-
-<fieldset class="col-sm-12" style="overflow-y: scroll; margin-top:10px;">
-  <legend>Friends Member:</legend>
-  <% @usergroup.each do |user| %>
-    <% if user.group_id == @group.id %>
-    <% @users.each do |username| %>
-    <% if username.id == user.user_id %>
-    <div class="col-sm-4">
-      <img class="col-sm-5" src="">
-      <div class="col-sm-6">
-        <span class="col-sm-12">
-          <%= username.name %></span>
-          <span class="col-sm-12" >
-                <%= link_to "Delete", delete_member_group_path(user.id),:class => "btn btn-success", :method => :delete , data: { confirm: 'Are you sure?' } %> 
-            </span>
-        </div>
-    </div>
-   <% end %>
-    <% end %>
-     <% end %>       
-  <% end %>
-</fieldset>
-
-      </div>
-
-    </div>
-
-
-
-       
-  </div> 
-
+  <div class="page-header">
+  <h1>Groups</h1>
+</div>
 </div>
 
 
+<div class="container">
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div id="group-form" >
+            <%= form_for Group.new do |f| %>
+    <% if @group.errors.any? %>
+      <div id="error_explanation">
+        <ul>
+        </ul>
+      </div>
+    <% end %>
+    <div class="form-group">
+    <h5><%= f.label :name %></h5>
+    <%= f.text_field :name, class: "form-control", placeholder: "Group Name" %>
+  </div>
+     <%= f.submit "Create Group", class: 'btn btn-default' %>
+  <% end %>
+  </div>
+    </div>
+</div>
+<br/>
+<div class="container">
+  <div class="row">
+      <div class="col-xs-4">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <table class="table">
+              <caption><h2>My Groups</h2></caption>
+              <tbody>
+                <% @groups.each do |group| %>
+                  <% if group.user_id == current_user.id %>
+                    <tr>
+                      <td><%= group.name %></td>
+                      <td>
+                        <%= link_to "Display", group,:class => "btn btn-default", :method => :get %> 
+                      </td>
+                      <td>
+                        <%= link_to "Delete", group,:class => "btn btn-danger", :method => :delete , data: { confirm: 'Are you sure?' } %> 
+                      </td>
+                    </tr>
+                  <% end %>
+                <%end%>
+              </tbody>
+            </table>
+          </div>
+        </div>  
+      </div>
+      <div class="col-xs-8">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-9 col-xs-offset-2">
+                <div class="row">
+                  <div id="group-form" >
+                    <%= form_for User.new, url: new_member_group_path(@group.id) do |f| %>
+                      <div class="col-xs-8">
+                        <div class="form-group">
+                          <%= f.text_field :email, class: "form-control", placeholder: "Enter email here" %>
+                        </div>
+                      </div>
+                      <div class="col-xs-3">
+                          <%= f.submit "Add Friend", class: 'btn btn-default' %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <h2>Friends Member</h2>
+              <br/>
+              <div class="row">
+                <% @usergroup.each do |user| %>
+                  <% if user.group_id == @group.id %>
+                    <% @users.each do |username| %>
+                      <% if username.id == user.user_id %>
+                        <div class="col-xs-2">
+                          <div class="container">
+                            <h4><%= username.name %></h4>
+                            <span id="follow_user<%=user.id%>">
+                            <%= link_to(delete_member_group_path(user.id), class:'btn btn-danger', :method => :delete , data: { confirm: 'Are you sure?' }) do %>
+                              <i class="icon-remove icon-white"></i>
+                              Delete
+                            <% end %></span><p></p>
+                          </div>
+                        </div>
+                      <% end %>
+                    <%end %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+            <br/>
+          </div>
+        </div>
+      </div>
 
-
-
+    </div>
+  </div>
+</div>

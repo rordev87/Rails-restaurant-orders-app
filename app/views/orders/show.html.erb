@@ -151,11 +151,6 @@
   </div>
 </div>
 
-
-
-<%= link_to 'Back', orders_path %>
-
-
 <%= form_for User.new, url: new_member_order_path(@order.id) do |t| %>
   
   <div class="field">
@@ -163,7 +158,7 @@
     <%= t.text_field :email %>
   </div>
   <div class="actions">
-  <%= t.submit  %>
+  <%= t.submit %>
   </div>
 <% end %>
 
@@ -185,3 +180,9 @@
     </div>
   <% end %>
 </fieldset>
+
+
+
+<%= link_to 'Back', orders_path %>
+
+
