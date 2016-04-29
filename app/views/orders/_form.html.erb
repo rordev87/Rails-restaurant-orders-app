@@ -41,7 +41,17 @@
     <br/>
       <div class="panel panel-default">
         <div class="panel-body">
+        <div class="row">
+          <div id="friends">
+  
+          </div>
           
+<div id="groups">
+  
+</div>
+        </div>
+          
+
         </div>
       </div>
     </div>
@@ -49,34 +59,46 @@
 </div>
 
 
-
-
-<% if @friends and @friends.length > 0 %>
-  <select id="friendsOption">
+<div class="container">
+  <h3>Invite Friend</h3><br/>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row">
+      <% if @friends and @friends.length > 0 %>
+        <div class="col-md-3">
+          <select id="friendsOption" class="btn btn-default dropdown-toggle">
     <% @friends.each do |friend| %>
       <option value="<%= friend.id %>"><%= friend.name %></option>
     <% end %>
 
   </select>
-  <button id="addFriend">add</button>
-
-<% end %>
-<% if @groups and @groups.length > 0 %>
-  <select id ="groupOption">
+        </div>
+        <div class="col-md-3">
+            <button id="addFriend" class="btn btn-info">add</button>
+        </div>
+        <% end %>
+        <% if @groups and @groups.length > 0 %>
+        <div class="col-md-3">
+          <select id ="groupOption" class="btn btn-default dropdown-toggle">
     <% @groups.each do |group| %>
       <option value="<%= group.id %>"><%= group.name %></option> 
     <% end %>
 
   </select>
-  <button id="addGroup">add</button>
-<% end %>
+        </div>
+        <div class="col-md-3">
+            <button id="addGroup" class="btn btn-success">add</button>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
 
-<div id="friends">
   
-</div>
-<div id="groups">
+
   
-</div>
+
 
 
 
@@ -102,7 +124,7 @@
       var text = "";
       for(var i = 0 ; i < ids.length ; i++){
 
-        text += "<div name='friend"+ids[i]+"'>"+names[ids[i]]+"<button name='"+ids[i]+"'>remove</button></div>"
+        text += "<div class='col-md-4' name='friend"+ids[i]+"'><h4>"+names[ids[i]]+"</h4> <button class='btn btn-danger' name='"+ids[i]+"''>remove</button></div>"
       }
       $("#friends").html(text);   
     }
@@ -204,7 +226,7 @@
     
     this.addGroup = function(group , groupName , groupId){
       
-      $("#groups").append("<div name='group"+groupId+"'>"+groupName+"<button name='"+groupId+"'>remove</button></div>")
+      $("#groups").append("<div class='col-md-4' name='group"+groupId+"'><h4>"+groupName+"</h4> <button class='btn btn-danger' name='"+groupId+"'>remove</button></div>")
 
       for(var i = 0 ; i < group.length ; i++){
         that.friendsListKeeper.addFriend(group[i].name,group[i].id+"");
