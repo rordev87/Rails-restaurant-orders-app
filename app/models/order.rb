@@ -7,7 +7,7 @@ class Order < ActiveRecord::Base
 	has_many :users, through: :order_user_joins, dependent: :destroy
 	has_many :items, dependent: :destroy
 
-	has_attached_file :image, styles: { medium: "300x300>"}
+	has_attached_file :image, styles: { medium: "500x500>"}
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 
 end

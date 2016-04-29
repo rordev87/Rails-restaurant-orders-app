@@ -8,7 +8,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-xs-6 col-xs-offset-3">
+    <div class="col-md-6 col-md-offset-3">
       <div id="group-form" >
             <%= form_for Group.new do |f| %>
     <% if @group.errors.any? %>
@@ -29,7 +29,7 @@
 <br/>
 <div class="container">
   <div class="row">
-      <div class="col-xs-4">
+      <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-body">
             <table class="table">
@@ -53,20 +53,20 @@
           </div>
         </div>  
       </div>
-      <div class="col-xs-8">
+      <div class="col-md-8">
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
-              <div class="col-xs-9 col-xs-offset-2">
+              <div class="col-md-9 col-md-offset-2">
                 <div class="row">
                   <div id="group-form" >
                     <%= form_for User.new, url: new_member_group_path(@group.id) do |f| %>
-                      <div class="col-xs-8">
+                      <div class="col-md-8">
                         <div class="form-group">
                           <%= f.text_field :email, class: "form-control", placeholder: "Enter email here" %>
                         </div>
                       </div>
-                      <div class="col-xs-3">
+                      <div class="col-md-3">
                           <%= f.submit "Add Friend", class: 'btn btn-default' %>
                       </div>
                     <% end %>
@@ -82,7 +82,7 @@
                   <% if user.group_id == @group.id %>
                     <% @users.each do |username| %>
                       <% if username.id == user.user_id %>
-                        <div class="col-xs-2">
+                        <div class="col-md-2">
                           <div class="container">
                             <h4><%= username.name %></h4>
                             <span id="follow_user<%=user.id%>">
