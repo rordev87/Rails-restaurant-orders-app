@@ -8,7 +8,7 @@
 
 <div class="container">
 <div class="row">
-<div class="col-xs-4">
+<div class="col-md-4">
   <%= form_for User.new , url: users_newfollow_path do |f| %>
   <p>
   <div class="form-group">
@@ -35,7 +35,7 @@
       <% @users.each do |user| %>
         <% unless user == current_user %>
         <% if current_user.following?(user) %>
-          <div class="col-xs-4">
+          <div class="col-md-4">
             <div class="container">
               <h4><%= user.name %></h4>
               <span id="follow_user<%=user.id%>">
