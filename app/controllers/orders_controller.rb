@@ -42,7 +42,6 @@ class OrdersController < ApplicationController
     OrderUserJoin.where(:order_id => order_id).where(:user_id => user_id).where(:is_joined => 1).take 
   end
 
-  
 
   def new_member
     @email = params[:user][:email]
@@ -124,7 +123,7 @@ class OrdersController < ApplicationController
 
     @order = current_user.orders.build(order_params)
     @order.status = "Waiting"
-    #@order.user_id = current_user.id
+    @order.user_id = current_user.id
     meal = @order.meal
     restaurant = @order.restaurant
     respond_to do |format|

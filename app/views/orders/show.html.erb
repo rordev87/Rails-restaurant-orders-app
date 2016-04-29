@@ -149,7 +149,7 @@
   </div>
 </div>
 
-<%= form_for User.new, url: @order.new_member do |t| %>
+<%= form_for User.new, url: new_member_order_path(@order.id) do |t| %>
   
   <div class="field">
     <%= t.label :email %><br>

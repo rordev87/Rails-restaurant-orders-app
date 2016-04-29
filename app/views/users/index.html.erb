@@ -1,37 +1,56 @@
 <%- model_class = User -%>
-<div class="page-header">
+<div class="container">
+  <div class="page-header">
   <h1>Friends</h1>
 </div>
+</div>
 
-<%= form_for User.new , url: users_newfollow_path do |f| %>
+
+<div class="container">
+<div class="row">
+<div class="col-xs-4">
+  <%= form_for User.new , url: users_newfollow_path do |f| %>
   <p>
-    <%= f.label :email %>
-    <%= f.text_field :email %>
-
-     <%= f.submit "Add Friend" , :class => 'btn btn-primary' %>
-     
+  <div class="form-group">
+    <h5><%= f.label :email %></h5>
+    <%= f.text_field :email, class: "form-control", placeholder: "Email" %>
+  </div>
+     <%= f.submit "Add Friend", class: 'btn btn-default' %>
+</div>
+</div>
+  
   <!-- class :'btn btn-primary'  -->
 </p>
-<% end %>
-<fieldset class="col-sm-12" style="overflow-y: scroll; margin-top:10px;">
-  <legend>Friends List:</legend>
-  <% @users.each do |user| %>
-    <% unless user == current_user %>
-    <% if current_user.following?(user) %>
-    <div class="col-sm-4">
-      <img class="col-sm-5" src="">
-      <div class="col-sm-6">
-        <span class="col-sm-12">
-          <%= user.name %></span>
-        <span class="col-sm-12" id="follow_user<%=user.id%>">
-                <%= link_to(unfollow_user_path(user), :remote => true, :class => 'btn btn-primary') do %>
-                <i class="icon-remove icon-white"></i>
-                 Un-Friend
-                <% end %>
-            </span>
-        </div>
-    </div>
-    <%end %>
-  <% end %>
-  <% end %>
-</fieldset>
+<% end %><br/>
+
+<div class="panel panel-default">
+<div class="panel-heading">
+  <div class="container">
+    <h4>Friends List</h4>
+  </div>
+</div>
+  <div class="panel-body">
+  <br>
+    <div class="row">
+      <% @users.each do |user| %>
+        <% unless user == current_user %>
+        <% if current_user.following?(user) %>
+          <div class="col-xs-4">
+            <div class="container">
+              <h4><%= user.name %></h4>
+              <span id="follow_user<%=user.id%>">
+                <%= link_to(unfollow_user_path(user), :remote => true, :class => 'btn btn-danger') do %>
+                  <i class="icon-remove icon-white"></i>
+                  Un-Friend
+                <% end %><p></p>
+            </div>
+          </div>
+        
+        <%end %>
+      <% end %>
+    <% end %>
+</div>
+  </div>
+
+</div>
+</div>
