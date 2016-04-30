@@ -26,7 +26,7 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    if params[:name] && params[:quantity] && params[:price]
+    if params[:item][:name] !="" && params[:item][:quantity] !="" && params[:item][:price] !=""
     @item = Item.new(item_params)
     @item.user_id=current_user.id
     @item.order_id=params[:order_id]

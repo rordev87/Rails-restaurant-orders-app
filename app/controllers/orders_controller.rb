@@ -100,7 +100,7 @@ class OrdersController < ApplicationController
   end
 
   def create
-    if params[:meal] && params[:restaurant]
+    if params[:order][:meal] !="" && params[:order][:restaurant] !=""
     @order = Order.new(order_params)
     @order.meal = params[:meal]
     @order.status = "waiting"
