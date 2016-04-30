@@ -37,6 +37,7 @@
         <% if current_user.following?(user) %>
           <div class="col-md-4">
             <div class="container">
+             <img class='img-circle img-responsive'  width='50px' height='40px' src=""/>
               <h4><%= user.name %></h4>
               <span id="follow_user<%=user.id%>">
                 <%= link_to(unfollow_user_path(user), :remote => true, :class => 'btn btn-danger') do %>
