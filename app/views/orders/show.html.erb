@@ -92,20 +92,13 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-8">
-      <%= form_for User.new, url: new_member_order_path(@order.id) do |t| %>
-  
-        <div class="field">
-          <%= t.label :email %><br>
-          <%= t.text_field :email, class: "form-control", placeholder: "Group Name" %>
-        </div>
-        <div class="actions">
-          <%= t.submit "Invite Friend", class: "btn btn-default" %>
-        </div>
-      <% end %>
+    <div class="col-md-6">
+      
     </div>
-    <div class="col-md-1"></div>
-    <div class="col-md-3">
+    <div class="col-md-1">
+      <%= link_to 'Back', orders_path %>
+    </div>
+    <div class="col-md-5">
       <%= image_tag @order.image.url(:medium) %>
     </div>
   </div>
@@ -138,9 +131,9 @@
                     <td><%= friend.name %></td>
                     <td><%= friend.email %></td>
                     <td><%= if current_user.id == @order.user_id
-                              link_to 'Destroy',  removeUserfromorder_path(@order.id, friend.id), method: :delete, data: { confirm: 'Are you sure?' }
+                              link_to 'remove',  removeUserfromorder_path(@order.id, friend.id), method: :delete, data: { confirm: 'Are you sure?' }
                             end %></td>
-                    <td><%= if current_user.id == friend.id
+                    <td><%= if current_user.id == friend.id && !@isJoined
                               link_to 'Join',  joinuserinorder_path(@order.id, friend.id), method: :put 
                             end %></td>
                   </tr>
@@ -197,6 +190,5 @@
   </div>
 </div>
 
-<%= link_to 'Back', orders_path %>
 
 

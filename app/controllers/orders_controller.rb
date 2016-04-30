@@ -89,11 +89,13 @@ class OrdersController < ApplicationController
     @order = current_user.orders.build
 
 
-    @friends_id = current_user.follows.map{|u| u.followable_id} 
+    @friends_id = current_user.follows.map{|u| u.followable_id}
+
+    #@friends_id = User.all.map{ |u| u.id }
     @friends = @friends_id.map{|u| User.find(u)}#current_user.follows.map{|u| User.find(u.followable_id)}
     _group_ids = UserGroup.where(:user_id => current_user.id).map{|ug| ug.group_id}
     @groups = Group.where(user_id: current_user.id);
-
+    #@groups = Group.all
   end
 
   def create

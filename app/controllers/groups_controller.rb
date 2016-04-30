@@ -25,7 +25,9 @@ class GroupsController < ApplicationController
     #todo make it for for the group only
     
     @usersIds= UserGroup.where(group_id: params[:id]).map { |e| e.user_id }
+    #@usersIds = User.all.map{|u| u.id}
     respond_with User.where(id: @usersIds)
+
   end
 
   # GET /groups/new
