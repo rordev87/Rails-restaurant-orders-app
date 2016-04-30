@@ -33,7 +33,7 @@ gem 'sqlite3', '~> 1.3', '>= 1.3.11'
 # gem 'bcrypt', '~> 3.1.7'
 
 gem 'devise'
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '~> 3.3', '>= 3.3.6'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem "omniauth-google-oauth2" 
@@ -48,6 +48,7 @@ gem 'omniauth-oauth2'
 gem 'puma', '~> 3.4'
 
 gem 'will_paginate', '~> 3.1'
+gem 'jquery-ui-rails', '~> 5.0', '>= 5.0.5'
 
 # Use Unicorn as the app server
 # gem 'unicorn'

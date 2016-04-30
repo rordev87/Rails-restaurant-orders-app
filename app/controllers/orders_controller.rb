@@ -2,11 +2,13 @@ class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :update, :destroy]
   before_action :authenticate_user!
 
+  arr = Array.new
   # GET /orders
   # GET /orders.json
   def index
     @orders = Order.where(user_id: current_user.id.to_i).paginate(:page => params[:page], :per_page => 5)
   end
+
 
   # GET /orders/1
   # GET /orders/1.json
@@ -43,46 +45,88 @@ class OrdersController < ApplicationController
 
   def new_member
     @email = params[:user][:email]
-    if @email!=""
-    # puts "***********************" + @email + "*****************************"
+    @order = Order.find(params[:id])
+    if @email !=""
+   # puts "***********************" + @email + "*****************************"
      @user = User.find_by_email(@email)
-     @order = Order.find(params[:id])
-
-
-     # if current_user.following?(@user)
-        if current_user.following?(@user)
-      unless OrderUserJoin.exists?(:user_id => @user.id) && OrderUserJoin.exists?(:order_id => @order.id) || current_user == @user.id
-          @orderuserjoin = OrderUserJoin.new(
-          order_id: @order.id,
-          user_id: @user.id )
-          @orderuserjoin.save
-       end 
+       # puts "***********************" + @group + "*****************************"
+      if @user != nil
+       if current_user != @user.id
+         if current_user.following?(@user)
+            puts '************************************ Friend found'
+            @userfound = OrderUserJoin.where(:user_id => @user.id , :order_id => @order.id )
+            if @userfound.exists? == false 
+                @orderuserjoin = OrderUserJoin.new(
+                order_id: @order.id,
+                user_id: @user.id )
+                @orderuserjoin.save
+                #  ' Add Frined to Group was successfully created.' 
+                 
+                redirect_to  order_path(@order.id)
+            else 
+                  puts '*********************** Frined aready founded .' 
+                  redirect_to  order_path(@order.id)
+            end 
+         else 
+           puts '******************* a user not a friend.' 
+            redirect_to  order_path(@order.id)
+         end
+       else 
+         puts '******************* trying to add himself to group .' 
+          redirect_to  order_path(@order.id)
+       end
+     else
+      puts '******************* not user'
+      redirect_to  order_path(@order.id)    
      end
-                redirect_to order_path(@order.id)
-
-        # UserGroup.new(user_id: @user.id , group_id:@group.id)
-        #  flash[:notice] = "Successfully created post."
-          #redirect_to orders_path
-        #else
-        #  render action: 'index'
-        #end
-        #redirect_to groups_path
-      # end
    else
-    redirect_to users_path {"error "}
-    end
+    puts '*******************  email is empty.' 
+    redirect_to order_path(@order.id)
+ end 
   end
   # GET /orders/new
   def new
     @order = current_user.orders.build
-    #@meal = @order.meal
-    #@restaurant = @order.restaurant
 
-    # Git
-    @users =User.all
-    @groups =Group.all
 
+    @friends_id = current_user.follows.map{|u| u.followable_id}
+
+    #@friends_id = User.all.map{ |u| u.id }
+    @friends = @friends_id.map{|u| User.find(u)}#current_user.follows.map{|u| User.find(u.followable_id)}
+    _group_ids = UserGroup.where(:user_id => current_user.id).map{|ug| ug.group_id}
+    @groups = Group.where(user_id: current_user.id);
+    #@groups = Group.all
   end
+
+  def create
+    @order = Order.new(order_params)
+    @order.meal = params[:meal]
+    @order.status = "waiting"
+    @order.user_id = current_user.id
+    @restaurant = @order.restaurant
+
+    puts "loooooooooooooooooooooooooooooooooooooooooooooo"+params[:firendsToBeAdded].to_s
+    respond_to do |format|
+      if @order.save
+        puts params["firendsToBeAdded"]
+        @friendsInvited = params[:firendsToBeAdded].split(",").map{|m| m.to_i}.each do |friendId|
+          @orderUser=OrderUserJoin.new
+          @orderUser.order_id=@order.id
+          @orderUser.user_id=friendId
+          @orderUser.is_joined=0
+          @orderUser.save
+          create_notification("#{current_user.name} has invited you to his order",friendId,current_user.id,@order.id)
+        end
+        format.html { redirect_to @order, notice: 'Order was successfully created.' }
+        format.json { render :show, status: :created, location: @order }
+      else
+        format.html { render :new }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
 
 
   def joinOrder
@@ -103,30 +147,8 @@ class OrdersController < ApplicationController
 
   # POST /orders
   # POST /orders.json
-  def create
-    @order = Order.new(order_params)
-    @order.meal = params[:meal]
-    @order.status = "waiting"
-    @order.user_id = current_user.id
-    @restaurant = @order.restaurant
-    respond_to do |format|
-      if @order.save
-        #@orderUser=OrderUserJoin.new
-        #@orderUser.order_id=@order.id
-        #@orderUser.user_id=User.where(name: params["friend"]).take.id
-        #@orderUser.is_joined=0
-        #@orderUser.save
-        #create_notification("#{current_user.name} has invited you to his order",@orderUser.user_id,current_user.id,@order.id)
-        #puts "hellllllllllllllllllllllllllo"+@order.id.to_s+"and again"+User.where(name: params["friend"]).take.id.to_s
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
-        format.json { render :show, status: :created, location: @order }
-      else
-        format.html { render :new }
-        format.json { render json: @order.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
+  
+  
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update

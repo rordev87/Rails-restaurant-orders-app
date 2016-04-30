@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy]
-
+  respond_to :html, :json
+  
   # GET /groups
   # GET /groups.json
   def index
@@ -16,6 +17,16 @@ class GroupsController < ApplicationController
      @groupm = current_user.groups.build
     @usergroup=UserGroup.all
     @users=User.all
+
+  end
+
+
+  def show_users
+    #todo make it for for the group only
+    
+    @usersIds= UserGroup.where(group_id: params[:id]).map { |e| e.user_id }
+    #@usersIds = User.all.map{|u| u.id}
+    respond_with User.where(id: @usersIds)
 
   end
 
@@ -81,6 +92,7 @@ end
     
 
     respond_to do |format|
+  
       if @group.save
         format.html { redirect_to groups_path, notice: 'Group was successfully created.' }
         format.json { render :index, status: :created, location: @group }
@@ -88,7 +100,8 @@ end
         format.html { render :new }
         format.json { render json: @group.errors, status: :unprocessable_entity }
       end
-    end
+   end
+
   end
 
   # PATCH/PUT /groups/1

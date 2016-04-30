@@ -1,11 +1,26 @@
-
-
-
-
-<div class="row big-box">
-<div class="col-md-4 box" id="myOrders"></div>
-<div class="col-md-push-4 col-md-4 box" id="friendsOrders"></div>
+<div class="container">
+	<div class="page-header">
+  <h1>Home</h1>
 </div>
+</div>
+
+<div class="container">
+	<div class="row">
+<div class="col-md-6">
+	<div class="panel panel-default">
+		<div class="panel-heading"><div class="container"><h4>Orders I'm in</h4></div></div>
+		<div class="panel-body" id="myOrders"></div>
+	</div>
+</div>
+<div class="col-md-6">
+	<div class="panel panel-default">
+		<div class="panel-heading"><div class="container"><h4>Friends Activities</h4></div></div>
+		<div class="panel-body" id="friendsOrders"></div>
+	</div>
+</div>
+</div>
+</div>
+
 
 <script>
 
@@ -43,7 +58,7 @@
 		}
 	}
 
-	var cleanMyOrder = new GeneralOrderBoxMaker("myOrders","the order i made","/theorders/my_orders.json",function(result){
+	var cleanMyOrder = new GeneralOrderBoxMaker("myOrders","","/theorders/my_orders.json",function(result){
 		  var text = "";
 		  for(var i = 0 ; i < result.length ; i++){
 
@@ -73,7 +88,7 @@
 	}*/ 
 	cleanMyOrder.render(); 
 
-	var cleanFriendsOrder = new GeneralOrderBoxMaker("friendsOrders","friendsActivity","/theorders/friends_orders.json",function(result){
+	var cleanFriendsOrder = new GeneralOrderBoxMaker("friendsOrders","","/theorders/friends_orders.json",function(result){
 		
 		  var text = "";
 		  for(var i = 0 ; i < result.length ; i++){
@@ -93,25 +108,6 @@
 	})
 	
 
-	/*cleanFriendsOrder.renderBody = function(result){
-		
-		  var text = "";
-		  for(var i = 0 ; i < result.length ; i++){
-			var order = result[i].order
-			var name = result[i].admin.name
-
-   			text += "<li><a href=/users/'"+result[i].admin.id+"'>"+name + "</a> has created an order from <a href='/orders/"+order.id+"'>" + order.restaurant+"</a></li>";
-;
-        	
-   		  }
-   		  if(text == ""){
-   		  	text= "no friends activity right now"
-   		  }
-
-   		  return text;
-
-	}*/ 
-	
 	cleanFriendsOrder.render(); 
 
 
