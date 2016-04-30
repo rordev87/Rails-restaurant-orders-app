@@ -16,11 +16,11 @@
 
   <div class="field">
     <%= label_tag :Order_for %><br>
-    <%= text_field_tag :meal, class: "form-control", placeholder: "Enter the meal here" %>
+    <%= text_field_tag :meal, :class => "form-control", placeholder: "Enter the meal here" %>
   </div>
   <div class="field">
     <%= f.label :From %><br>
-    <%= f.text_field :restaurant, class: "form-control", placeholder: "Enter The restaurant here" %>
+    <%= f.text_field :restaurant, :class => "form-control", placeholder: "Enter The restaurant here" %>
   </div>
 
   <div class="field">
@@ -37,16 +37,36 @@
   </div>
 <% end %>
     </div>
-    <div class="col-md-6">
+    
+
+    <div class="col-md-3">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div id="friends">
+              <h2>added friends</h2>  
+          </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div id="groups">
+              <h2>added groups</h2>  
+          </div>
+        </div>
+        </div>
+    </div>
+    <!--<div class="col-md-6">
     <br/>
       <div class="panel panel-default">
         <div class="panel-body">
         <div class="row">
-          <div id="friends">
-  
-          </div>
+          
           
 <div id="groups">
+            <h2>added friends</h2>  
   
 </div>
         </div>
@@ -54,7 +74,7 @@
 
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
 </div>
 
@@ -65,7 +85,7 @@
     <div class="col-md-6">
       <div class="row">
       <% if @friends and @friends.length > 0 %>
-        <div class="col-md-3">
+        <div class="col-md-3 selectOptions">
           <select id="friendsOption" class="btn btn-default dropdown-toggle">
     <% @friends.each do |friend| %>
       <option value="<%= friend.id %>"><%= friend.name %></option>
@@ -78,7 +98,7 @@
         </div>
         <% end %>
         <% if @groups and @groups.length > 0 %>
-        <div class="col-md-3">
+        <div class="col-md-3 selectOptions" >
           <select id ="groupOption" class="btn btn-default dropdown-toggle">
     <% @groups.each do |group| %>
       <option value="<%= group.id %>"><%= group.name %></option> 
@@ -103,6 +123,9 @@
 
 
 <script>
+  var isDropDownEmpty = function (dropId) {
+    return $("#"+dropId).html() && $("#"+dropId).html().indexOf("option") == -1
+  }
 
 
 
@@ -121,7 +144,7 @@
     });
 
     this.renderFriends = function(ids,names){
-      var text = "";
+      var text = "<h2>added friends</h2>";
       for(var i = 0 ; i < ids.length ; i++){
 
         text += "<div class='col-md-4' name='friend"+ids[i]+"'><h4>"+names[ids[i]]+"</h4> <button class='btn btn-danger' name='"+ids[i]+"''>remove</button></div>"
@@ -147,11 +170,16 @@
         this.friendIds.push(id+"")
         this.friendsNames[id] = name; 
         this.pushInFriend()
-        $("friend"+id).parent().remove()    
+        //$("friend"+id).parent().remove()    
+        $("#friendsOption option[value="+id+"]").remove()    
       }
         $("#firendsToBeAdded").val(this.friendIds+"")
 
-      console.log(this.friendIds)
+        if(isDropDownEmpty("friendsOption")){
+          $("#addFriend").prop("disabled", true)
+        }
+
+      //console.log(this.friendIds)
     }
 
     this.pushOutFriend = function (name,id) {
@@ -174,6 +202,8 @@
   //    console.log(this.friendIds)
       $("#firendsToBeAdded").val(this.friendIds+"")   
 
+      $("#addFriend").prop("disabled", false)
+
     }
 
 
@@ -181,6 +211,9 @@
 
 
   var DropDownRenderer = function(){
+
+    
+
 
     this.getSelectedOption = function(){
       var id = $('#friendsOption :selected').val();
@@ -222,6 +255,9 @@
         this.friendsListKeeper.removeFriend(myGroup[i].id+"");
 
       }
+
+      $("#addGroup").prop("disabled", false)
+
     }
     
     this.addGroup = function(group , groupName , groupId){
@@ -233,6 +269,10 @@
         
 
       }
+      if(isDropDownEmpty("groupOption")){
+        $("#addGroup").prop("disabled", true)
+      }
+
     }
     $( "#groups" ).on( "click", "button", function() {
       //alert("hi");
