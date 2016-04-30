@@ -26,14 +26,20 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
+    if params[:name] && params[:quantity] && params[:price]
     @item = Item.new(item_params)
     @item.user_id=current_user.id
     @item.order_id=params[:order_id]
     respond_to do |format|
       @item.save
       format.html { redirect_to  order_path(params[:order_id]), notice: 'Item was successfully created.' }
-      
     end
+  else
+      respond_to do |format|
+        format.html { redirect_to order_path(params[:order_id]), notice: 'Item addition failed.' }
+        format.json { head :no_content }
+      end
+  end
   end
 
   # PATCH/PUT /items/1

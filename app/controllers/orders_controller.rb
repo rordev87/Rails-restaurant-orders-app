@@ -97,6 +97,7 @@ class OrdersController < ApplicationController
   end
 
   def create
+    if params[:meal] && params[:restaurant]
     @order = Order.new(order_params)
     @order.meal = params[:meal]
     @order.status = "waiting"
@@ -122,6 +123,12 @@ class OrdersController < ApplicationController
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
+  else
+    respond_to do |format|
+      format.html { redirect_to orders_url, notice: 'Order creation failed.' }
+      format.json { head :no_content }
+    end
+  end
   end
 
 
