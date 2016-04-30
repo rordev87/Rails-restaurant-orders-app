@@ -5,3 +5,13 @@
 .hiddenfriends {
 	display : none;
 }
+
+select{
+	min-width: 30%;
+}
+select > option{
+	text-align: center;
+}
+.selectOptions > *{
+	vertical-align : bottom;
+}

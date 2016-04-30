@@ -90,14 +90,17 @@ class OrdersController < ApplicationController
     @order = current_user.orders.build
 
 
-    @friends_id = current_user.follows.map{|u| u.followable_id} 
+    @friends_id = current_user.follows.map{|u| u.followable_id}
+
+    #@friends_id = User.all.map{ |u| u.id }
     @friends = @friends_id.map{|u| User.find(u)}#current_user.follows.map{|u| User.find(u.followable_id)}
     _group_ids = UserGroup.where(:user_id => current_user.id).map{|ug| ug.group_id}
     @groups = Group.where(user_id: current_user.id);
-
+    #@groups = Group.all
   end
 
   def create
+    if params[:meal] && params[:restaurant]
     @order = Order.new(order_params)
     @order.meal = params[:meal]
     @order.status = "waiting"
@@ -123,6 +126,12 @@ class OrdersController < ApplicationController
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
+  else
+    respond_to do |format|
+      format.html { redirect_to orders_url, notice: 'Order creation failed.' }
+      format.json { head :no_content }
+    end
+  end
   end
 
 

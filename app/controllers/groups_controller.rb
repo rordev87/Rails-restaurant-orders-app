@@ -25,7 +25,9 @@ class GroupsController < ApplicationController
     #todo make it for for the group only
     
     @usersIds= UserGroup.where(group_id: params[:id]).map { |e| e.user_id }
+    #@usersIds = User.all.map{|u| u.id}
     respond_with User.where(id: @usersIds)
+
   end
 
   # GET /groups/new
@@ -85,6 +87,7 @@ end
   # POST /groups
   # POST /groups.json
   def create
+    if params[:name]
     @group = current_user.groups.build(group_params)
     @group.user_id = current_user.id
     
@@ -98,6 +101,12 @@ end
         format.json { render json: @group.errors, status: :unprocessable_entity }
       end
     end
+  else
+    respond_to do |format|
+      format.html { redirect_to groups_url, notice: 'Group creation failed.' }
+      format.json { head :no_content }
+    end
+  end
   end
 
   # PATCH/PUT /groups/1
