@@ -81,6 +81,7 @@
                 <% @usergroup.each do |user| %>
                   <% if user.group_id == @group.id %>
                     <% @users.each do |username| %>
+                    <% if current_user.following?(username) %>
                       <% if username.id == user.user_id %>
                         <div class="col-md-2">
                           <div class="container">
@@ -93,6 +94,7 @@
                           </div>
                         </div>
                       <% end %>
+                      <%end %>
                     <%end %>
                   <% end %>
                 <% end %>

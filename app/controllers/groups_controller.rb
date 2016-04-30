@@ -87,6 +87,7 @@ end
   # POST /groups
   # POST /groups.json
   def create
+    if params[:name]
     @group = current_user.groups.build(group_params)
     @group.user_id = current_user.id
     
@@ -100,7 +101,13 @@ end
         format.html { render :new }
         format.json { render json: @group.errors, status: :unprocessable_entity }
       end
-   end
+    end
+  else
+    respond_to do |format|
+      format.html { redirect_to groups_url, notice: 'Group creation failed.' }
+      format.json { head :no_content }
+    end
+  end
 
   end
 

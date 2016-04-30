@@ -17,7 +17,8 @@ class OrdersController < ApplicationController
     if ( (isInvited @order.id, current_user.id) || @order.user_id == current_user.id)
       @order=Order.where(id: params[:id]).take
       @item=Item.new
-      @isJoined = (isJoined @order.id, current_user.id) || @order.user_id == current_user.id
+      @isJoined = (isJoined @order.id, current_user.id)
+      @isinvited = (isInvited @order.id, current_user.id)
       @invitedFriends=Array.new
       @joinedFriends=Array.new
       OrderUserJoin.where(:order_id => params[:id]).each do |orderUser|
@@ -99,6 +100,7 @@ class OrdersController < ApplicationController
   end
 
   def create
+    if params[:meal] && params[:restaurant]
     @order = Order.new(order_params)
     @order.meal = params[:meal]
     @order.status = "waiting"
@@ -124,6 +126,12 @@ class OrdersController < ApplicationController
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
+  else
+    respond_to do |format|
+      format.html { redirect_to orders_url, notice: 'Order creation failed.' }
+      format.json { head :no_content }
+    end
+  end
   end
 
 
